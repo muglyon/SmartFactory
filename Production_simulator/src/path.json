@@ -1,0 +1,82 @@
+{
+    "hour": {
+        "type": "String",
+        "address": "DB701.HOUR"
+    },
+    "RANDOM_VALUE": {
+        "type": "Double",
+        "address": "DB701.RANDOM_VALUE"
+    },
+    "BP_PANNES_LF1": {
+        "type": "Double",
+        "address": "DB701.DBX0.0"
+    },
+    "BP_ORGA_LF1": {
+        "type": "Double",
+        "address": "DB701.DBX0.1"
+    },
+    "BP_CHTFORMAT_LF1": {
+        "type": "Double",
+        "address": "DB701.DBX0.2"
+    },
+    "BP_AP_LF1": {
+        "type": "Double",
+        "address": "DB701.DBX0.3"
+    },
+    "BP_QUAL_LF1": {
+        "type": "Double",
+        "address": "DB701.DBX0.4"
+    },
+    "VOY_AUTRES_LF1": {
+        "type": "Double",
+        "address": "DB701.DBX0.5"
+    },
+    "CARTON_ENTREE_LF1": {
+        "type": "Double",
+        "address": "DB701.DBX0.7"
+    },
+    "CARTON_SORTIE_LF1": {
+        "type": "Double",
+        "address": "DB701.DBX1.0"
+    },
+    "DEB_OF_LF1": {
+        "type": "Double",
+        "address": "DB701.DBX1.1"
+    },
+    "FIN_OF_LF1": {
+        "type": "Double",
+        "address": "DB701.DBX1.2"
+    },
+    "NB_BOUT_LF1": {
+        "type": "Double",
+        "address": "DB701.DBW2"
+    },
+    "NB_CARTON_LF1": {
+        "type": "Double",
+        "address": "DB701.DBW4"
+    },
+    "NUM_PAL_LF1": {
+        "type": "Double",
+        "address": "DB701.DBW6"
+    },
+    "CADENCE_LF1": {
+        "type": "Double",
+        "address": "DB701.DBW8"
+    },
+    "TRS_OBJECTIF": {
+        "type": "Double",
+        "address": "DB701.DBW10"
+    },
+    "OF_LF1": {
+        "type": "Double",
+        "address": "DB520.DBB0"
+    },
+    "LOT_LF1": {
+        "type": "Double",
+        "address": "DB521.DBB0"
+    },
+    "ARTICLE_LF1": {
+        "type": "String",
+        "address": "DB522.DBB0"
+    }
+}

@@ -1,0 +1,27 @@
+{
+    "name": "simulationkepware",
+    "version": "0.0.1",
+    "scripts": {
+        "start": "ts-node ./src/app.ts",
+        "test": "jest",
+        "test:coverage": "jest --coverage"
+    },
+    "dependencies": {
+        "csv-parser": "^2.3.3",
+        "node-opcua": "^2.13.0",
+        "ts-node": "^9.0.0",
+        "typescript": "^4.0.2"
+    },
+    "devDependencies": {
+        "@types/async": "^3.2.3",
+        "@types/jest": "^26.0.12",
+        "jest": "^26.4.2",
+        "jest-sonar-reporter": "^2.0.0",
+        "ts-jest": "^26.3.0"
+    },
+    "jestSonar": {
+        "reportPath": "testResults",
+        "reportFile": "sonar-report.xml",
+        "indent": 4
+    }
+}

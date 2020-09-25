@@ -1,0 +1,5 @@
+{
+    "kepwareHostname": "opc.tcp://INV011618:49320",
+    "interrupteurNodeId": "ns=2;s=Channel1.Device1.Simulation.machine2.Interrupteur",
+    "counter": "NB_CARTON_LF1"
+}
