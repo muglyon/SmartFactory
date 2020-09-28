@@ -6,6 +6,7 @@ This project shows how Azure Custom Vision can detect impurities :
 when filling in a green bocal with green balls, when a white ball is inserted by error, then the AI can deted the intruder.
 
 Steps (for more details, see PDF to come) : 
+* create an account to  Azure Custom Vision https://www.customvision.ai/ (could use free trial Azure account)
 * amonsgst the folder green/white/mixt ==> send all images to Azure Custom Vision
 * manually select via a rectangle tool the location of white balls and green balls
 * now the AI starts to understand what is a ball and helps you by pre-selection with a rectangle the balls on the other images
