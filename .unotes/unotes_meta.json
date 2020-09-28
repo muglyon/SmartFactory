@@ -1,0 +1,89 @@
+{
+  "name": "",
+  "isOrdered": true,
+  "folders": {
+    "BOM-Wooden-Shell": {
+      "name": "BOM-Wooden-Shell",
+      "isOrdered": true,
+      "folders": {},
+      "files": {
+        "readme": 0
+      }
+    },
+    "Module_AzureAI_CustomVision": {
+      "name": "Module_AzureAI_CustomVision",
+      "isOrdered": true,
+      "folders": {
+        "images_dataset_never_trained": {
+          "name": "images_dataset_never_trained",
+          "isOrdered": true,
+          "folders": {},
+          "files": {}
+        },
+        "images_dataset_training": {
+          "name": "images_dataset_training",
+          "isOrdered": true,
+          "folders": {
+            "green": {
+              "name": "green",
+              "isOrdered": true,
+              "folders": {},
+              "files": {}
+            },
+            "mixte_impurities-to-detect": {
+              "name": "mixte_impurities-to-detect",
+              "isOrdered": true,
+              "folders": {},
+              "files": {}
+            },
+            "white": {
+              "name": "white",
+              "isOrdered": true,
+              "folders": {},
+              "files": {}
+            }
+          },
+          "files": {}
+        }
+      },
+      "files": {
+        "readme": 0
+      }
+    },
+    "Production_simulator": {
+      "name": "Production_simulator",
+      "isOrdered": true,
+      "folders": {
+        "src": {
+          "name": "src",
+          "isOrdered": true,
+          "folders": {
+            "OPC": {
+              "name": "OPC",
+              "isOrdered": true,
+              "folders": {},
+              "files": {}
+            },
+            "types": {
+              "name": "types",
+              "isOrdered": true,
+              "folders": {},
+              "files": {}
+            }
+          },
+          "files": {}
+        }
+      },
+      "files": {}
+    },
+    "Resources": {
+      "name": "Resources",
+      "isOrdered": true,
+      "folders": {},
+      "files": {}
+    }
+  },
+  "files": {
+    "README": 0
+  }
+}
