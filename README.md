@@ -1,3 +1,7 @@
+#############################################
+# Copyright 2020 CC-BY-SA author : MUG Lyon #
+#############################################
+
 # SmartFactory
 This project project helps moving forward to the Smart Factory world, based on hands-on code.
 It is the OpenSource for a Microsoft Lab Experiences and could be used and improved by anyone !
