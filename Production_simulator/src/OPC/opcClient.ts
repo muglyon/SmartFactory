@@ -1,34 +1,48 @@
-import { MessageSecurityMode, SecurityPolicy, OPCUAClient, ClientSession, DataType, Variant, OPCUAClientOptions, coerceNodeId, DataValue, ClientSubscription, AttributeIds, MonitoredItem, ClientMonitoredItemBase, TimestampsToReturn, resolveNodeId } from 'node-opcua';
+import {
+    MessageSecurityMode,
+    SecurityPolicy,
+    OPCUAClient,
+    ClientSession,
+    OPCUAClientOptions,
+    ClientSubscription,
+    AttributeIds,
+    ClientMonitoredItemBase,
+    TimestampsToReturn,
+    resolveNodeId,
+    DataType,
+    Variant
+} from 'node-opcua';
 import config from '../config.json'
 
 class OpcClient {
-    private hostname: string;
     private session: ClientSession;
     private client: OPCUAClient;
     private isConnected = false;
     public subscription: ClientSubscription;
+
     constructor() {
-
-
         const connectOptions: OPCUAClientOptions = {
-            applicationName: "Simulateur",
+            applicationName: "SmartFactory",
             connectionStrategy: {
-                initialDelay: 1000,
+                initialDelay: 10,
                 maxRetry: 15
             },
             securityMode: MessageSecurityMode.None,
             securityPolicy: SecurityPolicy.None,
-            endpoint_must_exist: false
+            endpoint_must_exist: false,
+
         };
 
         this.client = OPCUAClient.create(connectOptions);
-        this.hostname = config.kepwareHostname
     }
 
-    async connectClient() {
+    /**
+     * Connect your client to a given server.
+     * @param hostname The hostname of your OPC-UA server @example "opc.tcp://localhost:4334/UA/SmartFactory"
+     */
+    async connectClient(hostname: string) {
         if (!this.isConnected) {
-            console.log(this.hostname)
-            await this.client.connect(this.hostname).catch((err) => {
+            await this.client.connect(hostname).catch((err) => {
                 console.error(`Impossible de se connecter au client OPCUA.`,);
                 console.error("OPC-UA connexion error ==> ", err);
                 throw err;
@@ -60,19 +74,29 @@ class OpcClient {
         }
     }
 
+    /**
+     * Return a monitor object for a given nodeId
+     * @param nodeId The id of the node you want to monitor @example "ns=1;i=1001"
+     */
     async getNodeMonitor(nodeId: string): Promise<ClientMonitoredItemBase> {
-        console.log(nodeId)
         return this.subscription.monitor({
             nodeId: resolveNodeId(nodeId),
             attributeId: AttributeIds.Value
         },
-        {
-            samplingInterval: 250,
-            discardOldest: true,
-            queueSize: 1
-        },
-        TimestampsToReturn.Both)
+            {
+                samplingInterval: 250,
+                discardOldest: true,
+                queueSize: 1
+            },
+            TimestampsToReturn.Both)
     }
+
+    modifyNode(nodeId: string, value: number) {
+        return this.session.writeSingleNode(nodeId, new Variant({
+            value, dataType: DataType.Double
+        }));
+    }
+
 }
 
 

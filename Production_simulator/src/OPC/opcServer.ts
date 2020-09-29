@@ -1,72 +1,50 @@
-import { OPCUAServer, Variant, OPCUACertificateManager, DataValue, UAVariable, StatusCodes, StatusCode, StatusCodeCallback } from 'node-opcua';
-import paths from '../path.json';
-import { MessageType } from '../types/messageType';
+import {
+    OPCUAServer,
+    OPCUACertificateManager,
+    MessageSecurityMode,
+    SecurityPolicy,
+    Namespace,
+    UAObject,
+} from 'node-opcua';
 
 class OpcServer {
-    private hostname: string;
-    private server: OPCUAServer;
-    private actualData: MessageType = {};
+    public server: OPCUAServer;
+    public namespace: Namespace;
+    public device: UAObject;
+    private port: number;
+    public hostname: string;
 
-    constructor() {
-        this.hostname = "opc.tcp://localhost:49321"
+    /**
+     * Create a mock server OPC-UA with node-opc
+     * @param port The port of the server @default 4334
+     */
+    constructor(port: number = 4334) {
+        this.port = port;
     }
 
-    async sessionInit(initData: MessageType) {
-        this.server = new OPCUAServer({
-            port: 49321, // the port of the listening socket of the server
-            resourcePath: "/",
-            serverCertificateManager: new OPCUACertificateManager({
-                automaticallyAcceptUnknownCertificate: true
-            })
-        });
-        this.actualData = initData;
-        await this.server.initialize();
+    sessionInit() {
+        return new Promise<void>(async (resolve) => {
+            this.server = new OPCUAServer({
+                port: this.port, // the port of the listening socket of the server
+                resourcePath: "/UA/SmartFactory",
 
-        const addressSpace = this.server.engine.addressSpace;
-        const namespace = addressSpace.getOwnNamespace();
+                allowAnonymous: true,
+                securityModes: [MessageSecurityMode.None],
+                securityPolicies: [SecurityPolicy.None]
+            });
+            await this.server.initialize();
 
-        // declare a new object
-        const device = namespace.addObject({
-            organizedBy: addressSpace.rootFolder.objects,
-            browseName: "DB701"
-        });
+            const addressSpace = this.server.engine.addressSpace;
+            this.namespace = addressSpace.getOwnNamespace();
 
-        Object.keys(paths).forEach((key) => {
-            if (key != "hour") {
-                namespace.addVariable({
-                    componentOf: device,
-                    browseName: key,
-                    dataType: paths[key].type,
-                    nodeId: paths[key].address,
-
-                    value: {
-                        timestamped_get: () => {
-                            return new DataValue({
-                                value: new Variant({ dataType: paths[key].type, value: this.actualData[key] }),
-                                sourceTimestamp: new Date(this.actualData["hour"]),
-                                sourcePicoseconds: 0
-                            });
-                        },
-                        timestamped_set: (dataValue: DataValue, callback: StatusCodeCallback) => {
-                            this.actualData[key] = dataValue.value.value
-                            callback(null, StatusCodes.Good)
-                        }
-                    }
-                });
-            }
-
-        })
-
-        this.server.start(() => {
-            console.log("Server is now listening ... ( press CTRL+C to stop)");
-            console.log("port ", this.server.endpoints[0].port);
+            await this.server.start();
+            console.log("Server is now listening ... (press CTRL+C to stop)");
             const endpointUrl = this.server.endpoints[0].endpointDescriptions()[0].endpointUrl;
+            this.hostname = endpointUrl;
             console.log(" the primary server endpoint url is ", endpointUrl);
+            resolve();
         });
-    }
 
-    sendUpdate(newData: MessageType) {
-        this.actualData = newData;
     }
 }
 export default OpcServer;

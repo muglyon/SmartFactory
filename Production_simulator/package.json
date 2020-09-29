@@ -8,16 +8,16 @@
     },
     "dependencies": {
         "csv-parser": "^2.3.3",
-        "node-opcua": "^2.13.0",
+        "node-opcua": "^2.18.0",
         "ts-node": "^9.0.0",
-        "typescript": "^4.0.2"
+        "typescript": "^4.0.3"
     },
     "devDependencies": {
         "@types/async": "^3.2.3",
-        "@types/jest": "^26.0.12",
+        "@types/jest": "^26.0.14",
         "jest": "^26.4.2",
         "jest-sonar-reporter": "^2.0.0",
-        "ts-jest": "^26.3.0"
+        "ts-jest": "^26.4.1"
     },
     "jestSonar": {
         "reportPath": "testResults",

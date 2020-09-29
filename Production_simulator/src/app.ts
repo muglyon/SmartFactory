@@ -1,81 +1,72 @@
 import OpcServer from './OPC/opcServer';
 import OpcClient from './OPC/opcClient';
-import config from './config.json';
-import { DataValue } from 'node-opcua';
+import { Variant, DataType, StatusCodes } from 'node-opcua';
 
-const main = async () => {
-  const opcServer = new OpcServer()
-  const opcClient = new OpcClient()
+async function main() {
+  // *** SERVER PART ***
+  const server = new OpcServer();
 
-  const datas = {
-    hour: new Date(),
-    DEB_OF_LF1: 1,
-    FIN_OF_LF1: 0,
-    NB_BOUT_LF1: 5,
-    NB_CARTON_LF1: 0,
-    VOY_AUTRES_LF1: 0,
-    BP_QUAL_LF1: 0,
-    BP_ORGA_LF1: 0,
-    BP_CHTFORMAT_LF1: 0,
-    BP_PANNES_LF1: 0,
-    BP_AP_LF1: 0,
-    CADENCE_LF1: 5000,
-    TRS_OBJECTIF: 75,
-    OF_LF1: 20020015,
-    ARTICLE_LF1: 'Créaline H2O',
-    LOT_LF1: 20015,
-    RANDOM_VALUE: 0
-  }
+  await server.sessionInit();
+  let randomValueOfDevice1 = 1.0;
+  const newDevice = server.namespace.addObject({
+    organizedBy: server.server.engine.addressSpace.rootFolder.objects,
+    browseName: "Device1"
+  });
 
-  datas.hour.setHours(8, 0, 0, 0)
-
-  await opcServer.sessionInit(datas)
-  await opcClient.connectClient();
-
-  let stopIncrease: boolean = false
-
-  await opcClient.getNodeMonitor(config.interrupteurNodeId).then((monitor) => {
-    monitor.on("changed", (value: DataValue) => {
-      if (value.value.value !== null) {
-
-        if (value.value.value === 0) {
-          stopIncrease = false
-        } else {
-          stopIncrease = true
-        }
+  server.namespace.addVariable({
+    componentOf: newDevice,
+    browseName: "random",
+    dataType: "Double",
+    value: {
+      get: function () {
+        return new Variant({ dataType: DataType.Double, value: randomValueOfDevice1 });
       }
-      console.log("Interrupteur value ==> ", value.value.value)
-    })
-  }).catch((err) => {
-    console.error(err)
-  })
-
-  const intervalFunction = () => {
-    datas.hour = new Date(datas.hour.getTime() + 15 * 60000) // Add 15 minutes
-
-    if (datas.hour.getHours() == 0 && datas.hour.getMinutes() == 0) {
-
-      datas.hour.setHours(8, 0, 0, 0)
-      datas[config.counter] = 0;
-      datas["OF_LF1"] += 1
-      datas["DEB_OF_LF1"] = 1
-
-    } else {
-      
-      datas["DEB_OF_LF1"] = 0
-      if (stopIncrease == false) {
-        datas[config.counter] += Math.floor(Math.random() * 200) + 100; // Random between 1 and 300
-      }
-    
     }
-    datas.RANDOM_VALUE++;
+  });
+
+  setInterval(() => {
+    // Value is changed by server
+    randomValueOfDevice1 = Math.random() * 10;
+  }, 500);
+
+  // *** CLIENT PART ***
+
+  const clientDevice = server.namespace.addObject({
+    organizedBy: server.server.engine.addressSpace.rootFolder.objects,
+    browseName: "clientDevice"
+  });
+
+  let clientVarValue = 1.1;
+
+  const clientVar = server.namespace.addVariable({
+    componentOf: clientDevice,
+    browseName: "clientVar",
+    dataType: "Double",
+    value: {
+      get: function () {
+        return new Variant({ dataType: DataType.Double, value: clientVarValue });
+      },
+      set: function (variant: Variant) {
+        clientVarValue = variant.value;
+        return StatusCodes.Good;
+      }
+    }
+  });
+
+  const client = new OpcClient();
+  await client.connectClient(server.hostname);
+
+  const nodeMonitor = await client.getNodeMonitor(clientVar.nodeId.displayText());
+  nodeMonitor.on("changed", (dataval) => {
+    console.log("Value changed by client ! ", dataval.value.value);
+  });
 
 
-    console.log("CARTON ==> ", datas[config.counter])
-    opcServer.sendUpdate(datas)
-  }
+  setInterval(async () => {
+    // Value is changed by the client
+    await client.modifyNode(clientVar.nodeId.toString(), Math.random() * 10)
 
-  setInterval(intervalFunction, 2000)
+  }, 1000)
 
 }
 
