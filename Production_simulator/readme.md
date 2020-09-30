@@ -4,18 +4,26 @@
 
 #############################################
 
-## SmartFactory - Simulation OPC-UA Server / Client
+## SmartFactory - Emulated OPC-UA Device
 
-With this tool you can emulate a OPC-UA server and somes datas with nodejs.
-This project is powered by  [node-opcua](https://github.com/node-opcua/node-opcua "node-opcua").
+The **emulated OPC-UA device** is based on data from an true OPC-UA Server.
+This project is powered by [node-opcua](https://github.com/node-opcua/node-opcua "node-opcua"), where NodeOPCUA is an OPC UA stack fully written in TypeScript for NodeJS.
+For simplicity, the OPC-UA server uses a self-signed certificate.
+And Node.js is an open source server environment.
 
-### Getting Started
+### Getting Started to create an OPC-UA Server (with simulated data)
+
+1. Download and install Node.js [https://nodejs.org/en/download/](https://nodejs.org/en/download/)
+2. Download the Source Code
+3. In a Command Prompt, go to the folder location where resides the file package.json
+4. then run the 2 commands
+
 ```
 npm install
 npm start
 ```
 
-The project is started, you should see informations in console. Like this.
+The project is started, you should see incoming informations in the console. Like this.
 
 ```
 Server is now listening ... (press CTRL+C to stop)
@@ -35,9 +43,10 @@ Value changed by client !  4.85616050355457
 Value changed by client !  8.23009544175288
 ```
 
-The first line is your OPC-UA server endpoint. You can use a custom OPC-UA client for take a look to your OPC nodes.
-I recommend you [UAExpert](https://www.unified-automation.com/products/development-tools/uaexpert.html "UAExpert")
+**That's it ! It's very easy to have a simulated OPC-UA device.**
+The first line is your OPC-UA server endpoint. You can use a custom OPC-UA client for take a look to your OPC nodes, or any OPC-UA compatible product, such as [https://www.kepware.com](https://www.kepware.com/en-us/) (by PTC), [https://www.unified-automation.com](https://www.unified-automation.com/), [https://github.com/FreeOpcUa](https://github.com/FreeOpcUa) (Python and C++), or a popular one [http://www.openopcua.org](http://www.openopcua.org/) (C++).
 
 ### Go deeply
+
 You can modify the simulation in `app.ts` file.
-We let you enjoy to connect it to a Azure IoT Hub by example !
+We let you enjoy to connect it to a Azure IoT Hub by example ! [https://docs.microsoft.com/en-us/azure/iot-hub/](https://docs.microsoft.com/en-us/azure/iot-hub/)
