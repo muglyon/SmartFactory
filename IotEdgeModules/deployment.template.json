@@ -1,0 +1,203 @@
+{
+    "$schema-template": "2.0.0",
+    "modulesContent": {
+      "$edgeAgent": {
+        "properties.desired": {
+          "schemaVersion": "1.0",
+          "runtime": {
+            "type": "docker",
+            "settings": {
+              "minDockerVersion": "v1.25",
+              "loggingOptions": "",
+              "registryCredentials": {
+                "docker": {
+                  "username": "$CONTAINER_REGISTRY_USERNAME",
+                  "password": "$CONTAINER_REGISTRY_PASSWORD",
+                  "address": "$CONTAINER_REGISTRY_ADRESS"
+                }
+              }
+            }
+          },
+          "systemModules": {
+            "edgeAgent": {
+              "type": "docker",
+              "env": {
+                "UpstreamProtocol": {
+                  "value": "Amqp"
+                }
+              },
+              "settings": {
+                "image": "mcr.microsoft.com/azureiotedge-agent:1.0",
+                "createOptions": {}
+              }
+            },
+            "edgeHub": {
+              "type": "docker",
+              "status": "running",
+              "restartPolicy": "always",
+              "env": {
+                "OptimizeForPerformance": {
+                  "value": "false"
+                },
+                "UpstreamProtocol": {
+                  "value": "Amqp"
+                }
+              },
+              "settings": {
+                "image": "mcr.microsoft.com/azureiotedge-hub:1.0",
+                "createOptions": {
+                  "HostConfig": {
+                    "PortBindings": {
+                      "5671/tcp": [
+                        {
+                          "HostPort": "5671"
+                        }
+                      ],
+                      "8883/tcp": [
+                        {
+                          "HostPort": "8883"
+                        }
+                      ],
+                      "443/tcp": [
+                        {
+                          "HostPort": "443"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "modules": {
+            "DataUpdater": {
+              "version": "1.0",
+              "type": "docker",
+              "status": "running",
+              "restartPolicy": "always",
+              "settings": {
+                "image": "${MODULES.DataUpdater}",
+                "createOptions": {
+                  "NetworkingConfig": {
+                    "EndpointsConfig": {
+                      "host": {}
+                    }
+                  },
+                  "HostConfig": {
+                    "NetworkMode": "host",
+                    "Binds": [
+                      "/iiotedge:/appdata"
+                    ]
+                  },
+                  "Mounts": [
+                    {
+                      "Type": "bind",
+                      "Source": "/iiotedge",
+                      "Destination": "/appdata",
+                      "Mode": "",
+                      "RW": true,
+                      "Propagation": "rprivate"
+                    }
+                  ]
+                }
+              }
+            },
+            "OPCPublisher": {
+              "version": "1.0",
+              "type": "docker",
+              "status": "running",
+              "restartPolicy": "always",
+              "settings": {
+                "image": "mcr.microsoft.com/iotedge/opc-publisher:$OPCPUBLISHER_VERSION",
+                "createOptions": {
+                  "Hostname": "publisher",
+                  "Cmd": [
+                    "publisher",
+                    "--pf=/appdata/pn.json",
+                    "--aa",
+                    "--si=1",
+                    "--ms=0"
+                  ],
+                  "HostConfig": {
+                    "PortBindings": {
+                      "62222/tcp": [
+                        {
+                          "HostPort": "62222"
+                        }
+                      ]
+                    },
+                    "Binds": [
+                      "/iiotedge:/appdata"
+                    ],
+                    "ExtraHosts": [
+                      "localhost:127.0.0.1"
+                    ]
+                  }
+                }
+              }
+            },
+            "OPCAdmin": {
+              "version": "1.0",
+              "type": "docker",
+              "status": "running",
+              "restartPolicy": "always",
+              "settings": {
+                "image": "${MODULES.OPCAdmin}",
+                "createOptions": {
+                  "NetworkingConfig": {
+                    "EndpointsConfig": {
+                      "host": {}
+                    }
+                  },
+                  "HostConfig": {
+                    "NetworkMode": "host"
+                  }
+                }
+              }
+            },
+            "DataProcessing": {
+              "version": "1.0",
+              "type": "docker",
+              "status": "running",
+              "restartPolicy": "always",
+              "settings": {
+                "image": "${MODULES.DataProcessing}",
+                "createOptions": {
+                  "NetworkingConfig": {
+                    "EndpointsConfig": {
+                      "host": {}
+                    }
+                  },
+                  "HostConfig": {
+                    "NetworkMode": "host",
+                    "PortBindings": {
+                      "27017/tcp": [
+                        {
+                          "HostPort": "27017"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "$edgeHub": {
+        "properties.desired": {
+          "schemaVersion": "1.0",
+          "routes": {
+            "MongoModuleToIoTHub": "FROM /messages/modules/MongoModule/outputs/* INTO BrokeredEndpoint(\"/modules/DataProcessing/inputs/publisher\")",
+            "OPCPublisherToMongoModule": "FROM /messages/modules/OPCPublisher/* INTO BrokeredEndpoint(\"/modules/MongoModule/inputs/publisher\")",
+            "DataProcessingToIoTHub": "FROM /messages/modules/DataProcessing/outputs/output1 INTO $upstream",
+            "DataProcessingToDataUpdater": "FROM /messages/modules/DataProcessing/outputs/outputUpdater INTO BrokeredEndpoint(\"/modules/DataUpdater/inputs/dataProcessing\")",
+            "CameraCaptureToDataUpdater": "FROM /messages/modules/cameraCapture/outputs/* INTO BrokeredEndpoint(\"/modules/DataUpdater/inputs/camera\")"
+          },
+          "storeAndForwardConfiguration": {
+            "timeToLiveSecs": 7200
+          }
+        }
+      }
+    }
+  }

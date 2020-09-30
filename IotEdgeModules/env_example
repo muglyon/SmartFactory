@@ -1,1 +1,4 @@
-$CONTAINER_REGISTRY_ADRESS=<Your docker container registry adress>
+CONTAINER_REGISTRY_ADRESS=<Your docker container registry adress>
+CONTAINER_REGISTRY_PASSWORD=<Your docker container registry password>
+CONTAINER_REGISTRY_USERNAME=<Your docker container registry username>
+OPCPUBLISHER_VERSION=2.3
