@@ -12,3 +12,5 @@ Like [Production_simulator](https://github.com/muglyon/SmartFactory/blob/master/
 ![Smart-F-Educational-platform.png](https://github.com/muglyon/SmartFactory/blob/master/Resources/iotedgeopensource.png?raw=true)
 
 ### Getting Started
+
+WORK IN PROGRESS...
