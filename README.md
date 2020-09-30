@@ -19,5 +19,6 @@ https://www.linkedin.com/posts/thavo\_francerelance-regionaldirector-mvp-activit
 ### Software toolset
 
  - /Production_simulator : Create a OPC-UA server and client for tests. [Getting started](https://github.com/muglyon/SmartFactory/blob/master/Production_simulator "Getting started")
+ - /IoTEdgeModules : Setup your modules on your IoT edge device and start to be smart !  [Getting started](https://github.com/muglyon/SmartFactory/blob/master/IotEdgeModules "Getting started")
 
 Vincent Thavonekham \| MUG Lyon co\-owner \| Microsoft RD & MVP
