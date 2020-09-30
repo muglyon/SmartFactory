@@ -15,4 +15,9 @@ https://www.linkedin.com/posts/thavo\_francerelance-regionaldirector-mvp-activit
 
 ![Smart-F-Educational-platform.png](https://github.com/muglyon/SmartFactory/blob/master/Resources/Smart-F-Educational-platform.png?raw=true)
 
+## Getting started
+### Software toolset
+
+ - /Production_simulator : Create a OPC-UA server and client for tests. [Getting started](https://github.com/muglyon/SmartFactory/blob/master/Production_simulator "Getting started")
+
 Vincent Thavonekham \| MUG Lyon co\-owner \| Microsoft RD & MVP

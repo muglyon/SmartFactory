@@ -38,6 +38,7 @@ async function main() {
 
   let clientVarValue = 1.1;
 
+  // We'll modify this variable with our local opc client.
   const clientVar = server.namespace.addVariable({
     componentOf: clientDevice,
     browseName: "clientVar",
@@ -48,6 +49,21 @@ async function main() {
       },
       set: function (variant: Variant) {
         clientVarValue = variant.value;
+        return StatusCodes.Good;
+      }
+    }
+  });
+
+  // Create a constante var for test modification with another client.
+  server.namespace.addVariable({
+    componentOf: clientDevice,
+    browseName: "constantVar",
+    dataType: "Double",
+    value: {
+      get: function () {
+        return new Variant({ dataType: DataType.Double, value: 10.0 });
+      },
+      set: function () {
         return StatusCodes.Good;
       }
     }

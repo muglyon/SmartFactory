@@ -1,0 +1,15 @@
+FROM arm32v7/node:8-slim
+
+WORKDIR /app/
+
+COPY package*.json ./
+
+RUN npm install 
+
+COPY ./ ./
+
+EXPOSE 9229
+
+USER node
+
+CMD ["npm", "start"]
