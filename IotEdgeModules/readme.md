@@ -13,7 +13,7 @@ Like [Production_simulator](https://github.com/muglyon/SmartFactory/blob/master/
 
 
 ### Modules list
- 1. SmartFactoryDataUpdater : It role is to send modifications to your OPC-UA server. It can monitor opc-ua nodes and modify opc-ua nodes. [See more...](https://github.com/muglyon/SmartFactory/blob/IoTEdgeModules/modules/SmartFacotryDataUpdater "See more...")
+ 1. SmartFactoryDataUpdater : It role is to send modifications to your OPC-UA server. It can monitor opc-ua nodes and modify opc-ua nodes. [See more...](https://github.com/muglyon/SmartFactory/tree/master/IotEdgeModules/modules/SmartFactoryDataUpdater "See more...")
 
 
 ### Getting Started
