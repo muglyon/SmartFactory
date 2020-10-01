@@ -16,8 +16,8 @@ This section present you the BOM - Bill of material for the wooden shell and app
 8. Emergency STOP button
 9. Fuses
 10. Conveyer (dummy)
-11. optional robot arm Stäubli TX2-40 (when installed 235 kg)
-12. 6 industrial buttons
+11. Optional robot arm Stäubli TX2-40 (when installed 235 kg)
+12. Six industrial buttons
 13. Firewall (either dummy or physical or software)
 
 ![image](https://raw.githubusercontent.com/muglyon/SmartFactory/master/BOM-Wooden-Shell/BOM-Woodenshell.jpg)
