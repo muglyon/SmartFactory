@@ -76,7 +76,7 @@
               "status": "running",
               "restartPolicy": "always",
               "settings": {
-                "image": "${MODULES.DataUpdater}",
+                "image": "${MODULES.SmartFactoryDataUpdater}",
                 "createOptions": {
                   "NetworkingConfig": {
                     "EndpointsConfig": {
