@@ -18,7 +18,7 @@ Like [Production_simulator](https://github.com/muglyon/SmartFactory/blob/master/
 
 ### Getting Started
 
-##### Prerequisites
+#### Prerequisites
 We supposed you are familiar with IoT Edge modules. 
 __If it's not your case we recommend you to follow [this tutorial](https://docs.microsoft.com/en-us/azure/iot-edge/tutorial-machine-learning-edge-06-custom-modules "this tutorial").__
 
