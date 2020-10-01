@@ -47,20 +47,20 @@ OPCPUBLISHER_VERSION=2.3
 
 #### Step one : Build images
 
-Go in every modules's folder and right click in the Visual Studio Code editor on their `module.json` then, select `Build and Push IoT Edge Module Image`.
+- Go in every modules's folder and right click in the Visual Studio Code editor on their `module.json` then, select `Build and Push IoT Edge Module Image`.
 
 #### Step two : Build the solution                    
 
-Right click on the deployment.template.json file in Visual Studio Code editor and select `Build and Push IoT Edge Solution`.
-Then you should see a new json file in your config folder.
+- Right click on the deployment.template.json file in Visual Studio Code editor and select `Build and Push IoT Edge Solution`.
+- Then you should see a new json file in your config folder.
 
 #### Step three : Deploy your IoT Edge solution 
 
-Uncollapse the Azure IoT Hub panel in files tab of Visual Studio Code.
-Click on Set IoT Hub Connection String
-Paste your IoT Hub connection string
-Right click on the name of your IoT Edge device then, choose `Create deployment for Single Device`.
-Choose your `config/deployment.amd64.json` by default.
+- Uncollapse the Azure IoT Hub panel in files tab of Visual Studio Code.
+- Click on Set IoT Hub Connection String
+- Paste your IoT Hub connection string
+- Right click on the name of your IoT Edge device then, choose `Create deployment for Single Device`.
+- Choose your `config/deployment.amd64.json` by default.
 
 That it ! You have the SmartFactory stack installed on your IoT Edge Device. You should verify if the installation correctly suceed.
 
