@@ -1,0 +1,12 @@
+[
+    {
+        "item": "Mesure.Temperature.Value",
+        "operator": "gte",
+        "value": 95
+    },
+    {
+        "item": "Mesure.Temperature.Value",
+        "operator": "lte",
+        "value": 5
+    }
+]

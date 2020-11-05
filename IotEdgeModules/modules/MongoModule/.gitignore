@@ -57,8 +57,3 @@ typings/
 # dotenv environment variables file
 .env
 
-# Remove IoT Edge deployments solutions.
-IotEdgeModules/config/*.json
-.vscode
-built
-testResults
