@@ -1,31 +1,22 @@
-import { MessageSecurityMode, SecurityPolicy, OPCUAClient, ClientSession, Variant, OPCUAClientOptions, coerceNodeId, DataValue } from 'node-opcua';
-import fs from 'fs';
+import { MessageSecurityMode, SecurityPolicy, OPCUAClient, ClientSession, DataType, Variant, OPCUAClientOptions, coerceNodeId, DataValue } from 'node-opcua';
 import { PnType, OpcNode, OpcClientType } from '../../types/pnType';
 import { UpdateDataType } from '../../types/datatype';
 import { MODULE_NAME } from '../constantes';
-import { CONFIG_PATH } from '../constantes';
 import { UnknownNodeError } from '../errors/UnknownNodeError';
 import { getLogger } from 'log4js';
 
 const logger = getLogger('DataUpdater')
 class OpcClient implements OpcClientType {
-    private hostname: string;
-    private nodes: OpcNode[];
+    public hostname: string;
+    public nodes: OpcNode[];
     private session: ClientSession;
     private client: OPCUAClient;
     private isConnected = false;
 
-    constructor(config: PnType = null) {
+    constructor(config: PnType) {
+        this.hostname = config.EndpointUrl
+        this.nodes = config.OpcNodes
 
-        if (!config) {
-            const rawdata = fs.readFileSync(CONFIG_PATH);
-            const options: PnType[] = JSON.parse(rawdata.toString());
-            this.hostname = options[0].EndpointUrl
-            this.nodes = options[0].OpcNodes
-        } else {
-            this.hostname = config.EndpointUrl,
-            this.nodes = config.OpcNodes
-        }
 
         const connectOptions: OPCUAClientOptions = {
             applicationName: MODULE_NAME,
@@ -41,11 +32,19 @@ class OpcClient implements OpcClientType {
         this.client = OPCUAClient.create(connectOptions);
     }
 
+    containNode(id: string) {
+        return this.nodes.some((node) => node.DisplayName == id)
+    }
+
+    updateNodes(nodes: OpcNode[]) {
+        this.nodes = nodes
+    }
+
     async connectClient() {
         if (!this.isConnected) {
             logger.log(this.hostname)
             await this.client.connect(this.hostname).catch((err) => {
-                logger.error(`Connection to the OPC-UA server impossible.`,);
+                logger.error(`Impossible de se connecter au client OPCUA.`,);
                 logger.error("OPC-UA connexion error ==> ", err);
                 throw err;
             });
@@ -54,7 +53,7 @@ class OpcClient implements OpcClientType {
                 this.isConnected = true;
 
                 this.session = await this.client.createSession().catch((err) => {
-                    logger.error(`Error during the creation of the OPC-UA session.`);
+                    logger.error(`Impossible de créer la session OPC-UA`);
                     throw err;
                 });
             }
@@ -63,7 +62,7 @@ class OpcClient implements OpcClientType {
 
     sendUpdate(data: UpdateDataType): Promise<string> {
 
-        return new Promise<string>(async (resolve, reject) => {
+        return new Promise<string>(async (res, rej) => {
             this.connectClient().then(async () => {
                 if (this.session) {
                     const key = Object.keys(data)[0];
@@ -72,31 +71,29 @@ class OpcClient implements OpcClientType {
                         const nodeId = coerceNodeId(node.Id)
                         const dataType = await this.session.getBuiltInDataType(nodeId)
                             .catch((err) => {
-                                logger.error("Error when you try to get the node: " + nodeId);
+                                logger.error("Erreur lors de la récupération du type du noeud " + nodeId);
                                 logger.error(err);
-                                reject(err);
+                                rej(err);
                             })
-                        if (dataType) {
-                            const statusCode = await this.session.writeSingleNode(nodeId, new Variant({
-                                dataType,
-                                value: data[key]
-                            })).catch((err) => {
-                                logger.error("Error during the write of the node: " + nodeId);
-                                logger.error(err);
-                                reject(err);
-                            });
+                        logger.log(dataType)
+                        const statusCode = await this.session.writeSingleNode(node.Id, {
+                            dataType: dataType,
+                            value: data[key]
+                        } as Variant).catch((err) => {
+                            logger.error("Erreur lors de l'écriture du noeud " + node.Id);
+                            logger.error(err);
+                            rej(err);
+                        });
 
-                            if (statusCode) {
-                                resolve(statusCode.name)
-                            }
-                        } else {
-                            reject(new Error("Unable to get the datatype of the node with nodeid " + nodeId));
+                        if (statusCode) {
+                            logger.info("status code ==>", statusCode);
+
+                            res(statusCode.name)
                         }
                     }
-                    const allDisplayNames = this.nodes.map((node) => node.DisplayName);
-                    reject(new UnknownNodeError(`Unknown node -> ' + ${key} List of availables node displayName ${allDisplayNames}`));
+                    rej(new UnknownNodeError('Unknown node -> ' + key))
                 } else {
-                    reject(new Error("Connexion uninitialized..."))
+                    rej(new Error("Aucune connexion initialisée"))
                 }
             });
         });

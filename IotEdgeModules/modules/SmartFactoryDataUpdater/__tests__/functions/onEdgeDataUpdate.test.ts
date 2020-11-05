@@ -1,50 +1,131 @@
+const mock = jest.fn().mockImplementation(function () {
+    return {
 
-import OpcClientMock from '../__mocks__/OpcClientMock';
+        isGyroRun: false,
+        updateData: jest.fn().mockReturnValue(new Promise((res, rej) => res())),
+
+        readData: jest.fn().mockReturnValue(new Promise((res, rej) => {
+
+            if (this.isGyroRun) {
+                res(7)
+            } else {
+                res(5)
+            }
+
+        }))
+    }
+})
+jest.mock("../../src/OPC/OpcManager", () => ({
+    __esModule: true,
+    default: mock
+}))
+
 import onEdgeDataUpdate from '../../src/functions/onEdgeDataUpdate'
-import processingUpdate from '../../src/updaters/processingUpdate'
-import cameraUpdate from '../../src/updaters/cameraUpdate'
+import waitForExpect from 'wait-for-expect';
 import { Message } from 'azure-iot-device';
-import { CAMERA_UPDATE_NAME, PROCESSING_UPDATE_NAME } from '../../src/constantes';
-
-jest.mock('../../src/updaters/processingUpdate')
-
-jest.mock('../../src/updaters/cameraUpdate');
+import { EDGE_UPDATE_NAME, GYROPHARE_DISPLAY_NAME } from '../../src/constantes';
+import OpcManager from '../../src/OPC/OpcManager';
 
 describe('onEdgeDataUpdate tests', () => {
 
     test('Given a message from a unknown source then return an error', async () => {
         expect.assertions(1)
-        const opcClient: OpcClientMock = new OpcClientMock()
-        opcClient.shouldReject = false
-        opcClient.statusCode = "OK"
-        opcClient.isGyroRun = false
-
-        await onEdgeDataUpdate("randomInputName", new Message("null"), opcClient).catch((err) => {
+        const opcManager: OpcManager = new OpcManager()
+        await onEdgeDataUpdate("randomInputName", new Message("null"), opcManager).catch((err) => {
             expect(err.message).toBe("Unknown input path randomInputName")
         })
 
     });
 
-    test('Given a message from a Data processing then call processingUpdate', async () => {
+    test('Given a message without gyro_state then return an error', async () => {
         expect.assertions(1)
-        const opcClient: OpcClientMock = new OpcClientMock()
+        const opcManager: OpcManager = new OpcManager()
 
-        await onEdgeDataUpdate(PROCESSING_UPDATE_NAME, new Message("null"), opcClient)
-        expect(processingUpdate).toHaveBeenCalledWith(null, opcClient)
+        await onEdgeDataUpdate(EDGE_UPDATE_NAME, new Message(JSON.stringify({ "random_key": 2 })), opcManager).catch((err) => {
+            expect(err.message).toBe("gyro_state properties missing")
+        })
+
+    });
+
+    test('Given a message with true gyro_state when gyrophare is already on then call update with same value', async () => {
+        expect.assertions(4)
+        const opcManager: any = new OpcManager()
+        opcManager.isGyroRun = true
+
+        await onEdgeDataUpdate(EDGE_UPDATE_NAME, new Message(JSON.stringify({ "gyro_state": true })), opcManager)
+
+        const readMock: jest.Mock = opcManager.readData as jest.Mock
+        const updateMock: jest.Mock = opcManager.updateData as jest.Mock
+
+        expect(readMock.mock.calls.length).toBe(1)
+        expect(readMock.mock.calls[0][0]).toBe(GYROPHARE_DISPLAY_NAME)
+
+        expect(updateMock.mock.calls.length).toBe(1)
+        expect(updateMock.mock.calls[0][0]).toEqual({
+            [GYROPHARE_DISPLAY_NAME]: 7
+        })
+
+    });
+
+    test('Given a message with true gyro_state when gyrophare is off then call update with increased value', async () => {
+        expect.assertions(4)
+        const opcManager: any = new OpcManager()
+        opcManager.isGyroRun = false
+
+        await onEdgeDataUpdate(EDGE_UPDATE_NAME, new Message(JSON.stringify({ "gyro_state": true })), opcManager)
+
+        const readMock: jest.Mock = opcManager.readData as jest.Mock
+        const updateMock: jest.Mock = opcManager.updateData as jest.Mock
+
+        expect(readMock.mock.calls.length).toBe(1)
+        expect(readMock.mock.calls[0][0]).toBe(GYROPHARE_DISPLAY_NAME)
+
+        expect(updateMock.mock.calls.length).toBe(1)
+        expect(updateMock.mock.calls[0][0]).toEqual({
+            [GYROPHARE_DISPLAY_NAME]: 7
+        })
+
+    });
+
+    test('Given a message with false gyro_state when gyrophare is off then call update with same value', async () => {
+        expect.assertions(4)
+        const opcManager: any = new OpcManager()
+        opcManager.isGyroRun = false
+
+        await onEdgeDataUpdate(EDGE_UPDATE_NAME, new Message(JSON.stringify({ "gyro_state": false })), opcManager)
+
+
+        const readMock: jest.Mock = opcManager.readData as jest.Mock
+        const updateMock: jest.Mock = opcManager.updateData as jest.Mock
+
+        expect(readMock.mock.calls.length).toBe(1)
+        expect(readMock.mock.calls[0][0]).toBe(GYROPHARE_DISPLAY_NAME)
+
+        expect(updateMock.mock.calls.length).toBe(1)
+        expect(updateMock.mock.calls[0][0]).toEqual({
+            [GYROPHARE_DISPLAY_NAME]: 5
+        })
 
 
     });
 
-    test('Given a message from a CameraCapture then call cameraUpdate', async () => {
-        expect.assertions(1)
-        const opcClient: OpcClientMock = new OpcClientMock()
+    test('Given a message with false gyro_state when gyrophare is on then call update with decreased value', async () => {
+        expect.assertions(4)
+        const opcManager: any = new OpcManager()
+        opcManager.isGyroRun = true
 
-        await onEdgeDataUpdate(CAMERA_UPDATE_NAME, new Message("null"), opcClient)
+        await onEdgeDataUpdate(EDGE_UPDATE_NAME, new Message(JSON.stringify({ "gyro_state": false })), opcManager)
 
-        expect(cameraUpdate).toHaveBeenCalledWith(null, opcClient)
+        const readMock: jest.Mock = opcManager.readData as jest.Mock
+        const updateMock: jest.Mock = opcManager.updateData as jest.Mock
 
+        expect(readMock.mock.calls.length).toBe(1)
+        expect(readMock.mock.calls[0][0]).toBe(GYROPHARE_DISPLAY_NAME)
+
+        expect(updateMock.mock.calls.length).toBe(1)
+        expect(updateMock.mock.calls[0][0]).toEqual({
+            [GYROPHARE_DISPLAY_NAME]: 5
+        })
 
     });
-
-
 })

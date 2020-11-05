@@ -1,12 +1,11 @@
 import { Mqtt } from 'azure-iot-device-mqtt';
 import { ModuleClient, Message } from 'azure-iot-device';
-import OpcClient from './OPC/opcClient';
 import onDataUpdate from './functions/onDataUpdate';
-import { DATA_UPDATE_METHOD_NAME, HTTP_CODE_500 } from './constantes';
+import { DATA_UPDATE_METHOD_NAME } from './constantes';
 import loggerConfig from './loggerConfig';
 import { getLogger } from 'log4js';
 import onEdgeDataUpdate from './functions/onEdgeDataUpdate';
-import { UpdateDataType } from '../types/datatype';
+import OpcManager from './OPC/OpcManager';
 
 loggerConfig();
 
@@ -24,30 +23,17 @@ ModuleClient.fromEnvironment(Mqtt, (moduleConnectionError, client) => {
 
     logger.info('IoT Hub module client initialized')
 
-    const opcClient = new OpcClient()
+    const opcManager = new OpcManager()
 
-    client.onMethod(DATA_UPDATE_METHOD_NAME, async (request, response) => {
-      try {
-        const payload: UpdateDataType = JSON.parse(request.payload);
-        const updateResponse = await onDataUpdate(payload, opcClient);
-
-        response.send(updateResponse.status, updateResponse.result);
-
-      } catch (e) {
-        // JSON.parse can throw a error
-        logger.error("Errror during parse of the message" + request.payload);
-        logger.error(e);
-        response.send(HTTP_CODE_500, e);
-      }
-    })
+    client.onMethod(DATA_UPDATE_METHOD_NAME, (request, response) => onDataUpdate(request, response, opcManager))
 
     client.on('inputMessage', (inputName, msg) => {
-      onEdgeDataUpdate(inputName, msg, opcClient).then(() => {
+      onEdgeDataUpdate(inputName, msg, opcManager).then(() => {
         client.complete(msg, printResultFor('Receiving message'))
       }).catch((err: Error) => {
         logger.error(err.message);
         client.complete(new Message(err.message), printResultFor('Receiving message'))
-      })
+      }) 
     })
 
     client.on('error', function (error: Error) {
@@ -62,11 +48,11 @@ ModuleClient.fromEnvironment(Mqtt, (moduleConnectionError, client) => {
 
 function printResultFor(op: string) {
   return function printResult(err: Error, res: any) {
-    if (err) {
-      console.error(op + ' error: ' + err.toString());
-    }
-    if (res) {
-      console.log(op + ' status: ' + res.constructor.name);
-    }
+      if (err) {
+          console.error(op + ' error: ' + err.toString());
+      }
+      if (res) {
+          console.log(op + ' status: ' + res.constructor.name);
+      }
   };
 }

@@ -9,7 +9,9 @@ loggerConfig();
 // Ceci n'est qu'un exemple, utilisez les noeuds de votre serveur OPCUA
 const opcClient = new OpcClient({
     // By default we set the Production simulation endpoint.
-    EndpointUrl: "opc.tcp://INV011498:4334/UA/SmartFactory", OpcNodes: [
+    EndpointUrl: "opc.tcp://INV011498:4334/UA/SmartFactory",
+    UseSecurity: false,
+    OpcNodes: [
         {
             Id: "ns=1;i=1004",
             DisplayName: "clientDevice.constantVar"

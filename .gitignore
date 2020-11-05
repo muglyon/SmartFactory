@@ -59,3 +59,4 @@ typings/
 
 # Remove IoT Edge deployments solutions.
 IotEdgeModules/config/*.json
+.vscode

@@ -1,15 +1,14 @@
 
 import * as opcua from 'node-opcua';
 import OpcClient from '../../src/OPC/opcClient';
-import mockfs from 'mock-fs'
+import { PnType } from '../../types/pnType';
 global.console = require("../__mocks__/console");
 
 describe('opcClient tests', () => {
     let shouldReject = false
     let session: any;
 
-    const pnJsonContent = JSON.stringify([
-        {
+    const config: PnType = {
             "EndpointUrl": "endpoint",
             "UseSecurity": false,
             "OpcNodes": [
@@ -23,14 +22,9 @@ describe('opcClient tests', () => {
                 },
             ]
         }
-    ])
+    
 
     beforeEach(() => {
-        mockfs({
-            '/appdata': {
-                'pn.json': pnJsonContent,
-            },
-        });
 
         shouldReject = false
         session = {
@@ -75,10 +69,6 @@ describe('opcClient tests', () => {
         }
     });
 
-    afterEach(() => {
-        mockfs.restore()
-    })
-
     test('should connect and create session', async () => {
         let isSessionCreated = false
         opcua.OPCUAClient.create = (options: opcua.OPCUAClientOptions) => {
@@ -96,7 +86,7 @@ describe('opcClient tests', () => {
             } as any as opcua.OPCUAClient
         }
 
-        const opcClient = new OpcClient()
+        const opcClient = new OpcClient(config)
         await opcClient.connectClient()
 
         expect(isSessionCreated).toBe(true)
@@ -105,7 +95,7 @@ describe('opcClient tests', () => {
     test('Given an unknown item when sendUpdate then throw error', async () => {
 
         let isRejected = false;
-        const opcClient = new OpcClient()
+        const opcClient = new OpcClient(config)
         await opcClient.connectClient()
 
         try {
@@ -113,7 +103,7 @@ describe('opcClient tests', () => {
                 "UnknownItem": 3
             })
         } catch (e) {
-            expect(e.message).toBe("Unknown node -> ' + UnknownItem List of availables node displayName item1.sensor1,item1.sensor2")
+            expect(e.message).toBe('Unknown node -> UnknownItem')
             isRejected = true
         }
 
@@ -125,23 +115,23 @@ describe('opcClient tests', () => {
 
     test('Given a good double item when sendUpdate then return OK', async () => {
 
-        const opcClient = new OpcClient()
+        const opcClient = new OpcClient(config)
         await opcClient.connectClient()
 
         let result = await opcClient.sendUpdate({
             "item1.sensor1": 3
         })
 
-        expect(session.writeSingleNode).toHaveBeenCalledWith("ns=2;s=id1", new opcua.Variant({
+        expect(session.writeSingleNode).toHaveBeenCalledWith("ns=2;s=id1", {
             dataType: opcua.DataType.Double,
             value: 3
-        }))
+        })
         expect(result).toBe("OK")
 
     })
 
     test('Given a good item when readValue then return 6', async () => {
-        const opcClient = new OpcClient()
+        const opcClient = new OpcClient(config)
         // await opcClient.sessionInit()
 
         let result = await opcClient.readValue("item1.sensor1")
@@ -154,7 +144,7 @@ describe('opcClient tests', () => {
 
     test('Given a good boolean item when sendUpdate then return OK', async () => {
 
-        const opcClient = new OpcClient()
+        const opcClient = new OpcClient(config)
         await opcClient.connectClient()
 
         session.getBuiltInDataType = jest.fn((node: opcua.NodeId) => new Promise<opcua.DataType>((res, rej) => {
@@ -165,10 +155,10 @@ describe('opcClient tests', () => {
             "item1.sensor1": true
         })
 
-        expect(session.writeSingleNode).toHaveBeenCalledWith("ns=2;s=id1", new opcua.Variant({
+        expect(session.writeSingleNode).toHaveBeenCalledWith("ns=2;s=id1", {
             dataType: opcua.DataType.Boolean,
             value: true
-        }))
+        })
 
         expect(result).toBe("OK")
 
@@ -176,7 +166,7 @@ describe('opcClient tests', () => {
 
     test('Given a valid displayname for readValue then session should be call with the correct id', async () => {
 
-        const opcClient = new OpcClient()
+        const opcClient = new OpcClient(config)
         await opcClient.connectClient()
 
         let result = await opcClient.readValue("item1.sensor1")
@@ -189,7 +179,7 @@ describe('opcClient tests', () => {
     test('Given a invalid displayname for readValue then session should not be called', async () => {
 
         expect.assertions(3)
-        const opcClient = new OpcClient()
+        const opcClient = new OpcClient(config)
         await opcClient.connectClient()
 
         let result = await opcClient.readValue("randomDisplayName").catch((err) => {
@@ -198,5 +188,25 @@ describe('opcClient tests', () => {
 
         expect(session.readVariableValue).not.toHaveBeenCalled()
 
+    })
+
+    test("Given a known displayName, containNode should return true", () => {
+        const opcClient = new OpcClient(config)
+
+        expect(opcClient.containNode("item1.sensor1")).toBe(true)
+    })
+
+    test("Given an unknown displayName, containNode should return false", () => {
+        const opcClient = new OpcClient(config)
+
+        expect(opcClient.containNode("Unknown.node")).toBe(false)
+    })
+
+    
+    test("Given a config, updateNodes should update local config", () => {
+        const opcClient = new OpcClient(config)
+
+        opcClient.updateNodes([])
+        expect(opcClient.nodes).toEqual([])
     })
 })

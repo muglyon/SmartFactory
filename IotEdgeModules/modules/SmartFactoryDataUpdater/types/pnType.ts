@@ -3,6 +3,7 @@ import { UpdateDataType } from "./datatype";
 export interface PnType {
     EndpointUrl: string;
     OpcNodes: OpcNode[];
+    UseSecurity: boolean;
 }
 
 export interface OpcNode {
@@ -21,4 +22,8 @@ export interface OpcClientType {
 
     readValue: (displayName: string) => Promise<any>;
 
+
+    containNode: (id: string) => boolean;
+
+    updateNodes: (nodes: OpcNode[]) => void;
 }
