@@ -70,6 +70,122 @@
             }
           },
           "modules": {
+            "DataParser": {
+              "version": "1.0",
+              "type": "docker",
+              "status": "running",
+              "restartPolicy": "always",
+              "settings": {
+                "image": "${MODULES.DataParser}",
+                "createOptions": {}
+              }
+            },
+            "MongoModule": {
+              "version": "1.0",
+              "type": "docker",
+              "status": "running",
+              "restartPolicy": "always",
+              "env": {
+                "MONGO_DATABASE": {
+                  "value": "$MONGO_INITDB_DATABASE"
+                },
+                "MONGO_USERNAME": {
+                  "value": "$MONGO_INITDB_ROOT_USERNAME"
+                },
+                "MONGO_PASSWORD": {
+                  "value": "$MONGO_INITDB_ROOT_PASSWORD"
+                },
+                "MONGO_ADDRESS": {
+                  "value": "$MONGO_ADDRESS"
+                },
+                "MONGO_PORT": {
+                  "value": "$MONGO_PORT"
+                }
+              },
+              "settings": {
+                "image": "${MODULES.MongoModule}",
+                "createOptions": {
+                  "NetworkingConfig": {
+                    "EndpointsConfig": {
+                      "host": {}
+                    }
+                  },
+                  "HostConfig": {
+                    "NetworkMode": "host",
+                    "PortBindings": {
+                      "27017/tcp": [
+                        {
+                          "HostPort": "27017"
+                        }
+                      ]
+                    },
+                    "Binds": [
+                      "/data/logs:/app/logs/"
+                    ]
+                  },
+                  "Mounts": [
+                    {
+                      "Type": "bind",
+                      "Source": "/data/logs",
+                      "Destination": "/app/logs/",
+                      "Mode": "",
+                      "RW": true,
+                      "Propagation": "rprivate"
+                    }
+                  ]
+                }
+              }
+            },
+            "MongoLocal": {
+              "version": "1.0",
+              "type": "docker",
+              "status": "running",
+              "restartPolicy": "always",
+              "env": {
+                "MONGO_INITDB_DATABASE": {
+                  "value": "$MONGO_INITDB_DATABASE"
+                },
+                "MONGO_INITDB_ROOT_USERNAME": {
+                  "value": "$MONGO_INITDB_ROOT_USERNAME"
+                },
+                "MONGO_INITDB_ROOT_PASSWORD": {
+                  "value": "$MONGO_INITDB_ROOT_PASSWORD"
+                }
+              },
+              "settings": {
+                "image": "mongo",
+                "createOptions": {
+                  "NetworkingConfig": {
+                    "EndpointsConfig": {
+                      "host": {}
+                    }
+                  },
+                  "HostConfig": {
+                    "NetworkMode": "host",
+                    "PortBindings": {
+                      "27017/tcp": [
+                        {
+                          "HostPort": "27017"
+                        }
+                      ]
+                    },
+                    "Binds": [
+                      "/data/db:/data/db"
+                    ]
+                  },
+                  "Mounts": [
+                    {
+                      "Type": "bind",
+                      "Source": "/data/db",
+                      "Destination": "/data/db",
+                      "Mode": "",
+                      "RW": true,
+                      "Propagation": "rprivate"
+                    }
+                  ]
+                }
+              }
+            },
             "DataUpdater": {
               "version": "1.0",
               "type": "docker",
@@ -188,11 +304,11 @@
         "properties.desired": {
           "schemaVersion": "1.0",
           "routes": {
-            "MongoModuleToIoTHub": "FROM /messages/modules/MongoModule/outputs/* INTO BrokeredEndpoint(\"/modules/DataProcessing/inputs/publisher\")",
-            "OPCPublisherToMongoModule": "FROM /messages/modules/OPCPublisher/* INTO BrokeredEndpoint(\"/modules/MongoModule/inputs/publisher\")",
+            "DataParserToIoTHub": "FROM /messages/modules/DataParser/outputs/output1 INTO BrokeredEndpoint(\"/modules/DataProcessing/inputs/publisher\")",
+            "OPCPublisherToDataParser": "FROM /messages/modules/OPCPublisher/* INTO BrokeredEndpoint(\"/modules/DataParser/inputs/publisher\")",
+            "DataParserToMongoModule": "FROM /messages/modules/OPCPublisher/storageOutput INTO BrokeredEndpoint(\"/modules/MongoModule/inputs/parser\")",
             "DataProcessingToIoTHub": "FROM /messages/modules/DataProcessing/outputs/output1 INTO $upstream",
-            "DataProcessingToDataUpdater": "FROM /messages/modules/DataProcessing/outputs/outputUpdater INTO BrokeredEndpoint(\"/modules/DataUpdater/inputs/dataProcessing\")",
-            "CameraCaptureToDataUpdater": "FROM /messages/modules/cameraCapture/outputs/* INTO BrokeredEndpoint(\"/modules/DataUpdater/inputs/camera\")"
+            "DataProcessingToDataUpdater": "FROM /messages/modules/DataProcessing/outputs/outputUpdater INTO BrokeredEndpoint(\"/modules/DataUpdater/inputs/edgeUpdate\")"
           },
           "storeAndForwardConfiguration": {
             "timeToLiveSecs": 7200

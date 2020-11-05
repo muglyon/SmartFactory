@@ -15,17 +15,17 @@ Like [Production_simulator](https://github.com/muglyon/SmartFactory/blob/master/
 ### Modules list
  1. OPCPublisher : Microsoft module. It role is to listen several OPC UA servers and to send every modification with the iot edge message system. The list of servers and nodes to listen should be referenced in the file /iiotedge/pn.json. [See more...](https://docs.microsoft.com/en-us/azure/iot-accelerators/howto-opc-publisher-configure "See more...")
 
- 2. DataParser : It role is to catch all messages from OPCPublisher and format them to create a valid JSON object. It use the node DisplayName to create the JSON structure
+ 2. DataParser : It role is to catch all messages from OPCPublisher and format them to create a valid JSON object. It use the node DisplayName to create the JSON structure [See more...](https://github.com/muglyon/SmartFactory/tree/master/IotEdgeModules/modules/DataParser "See more...")
 
- 3. MongoLocal : Official MongoDB docker image. Used to locally store the messages.
+ 3. MongoLocal : Official MongoDB docker image. Used to locally store the messages. [See more...](https://hub.docker.com/_/mongo "See more...")
 
- 4. MongoModule : Store the JSON objects sent by the DataParser in the local mongoDB.
+ 4. MongoModule : Store the JSON objects sent by the DataParser in the local mongoDB. [See more...](https://github.com/muglyon/SmartFactory/tree/master/IotEdgeModules/modules/MongoModule "See more...")
 
- 5. DataProcessing : It role is to process the JSON message. Our version use a basic rule framework to create several alert tagged messages according to the values of the message.
+ 5. DataProcessing : It role is to process the JSON message. Our version use a basic rule framework to create several alert tagged messages according to the values of the message. [See more...](https://github.com/muglyon/SmartFactory/tree/master/IotEdgeModules/modules/DataProcessing "See more...")
 
  6. SmartFactoryDataUpdater : It role is to send modifications to your OPC UA server. It can monitor opc-ua nodes and modify opc-ua nodes. [See more...](https://github.com/muglyon/SmartFactory/tree/master/IotEdgeModules/modules/SmartFactoryDataUpdater "See more...")
 
- 7. OPCAdmin : This module uses Direct Methods to connect to an OPC UA server and get the nodes id and childs. Usefull to programmatically configure the OPCPublisher
+ 7. OPCAdmin : This module uses Direct Methods to connect to an OPC UA server and get the nodes id and childs. Usefull to programmatically configure the OPCPublisher [See more...](https://github.com/muglyon/SmartFactory/tree/master/IotEdgeModules/modules/OPCAdmin "See more...")
 
 ### Getting Started
 
