@@ -2,22 +2,24 @@ import { MessageSecurityMode, SecurityPolicy, OPCUAClient, ClientSession, NodeCl
 import { OpcNode } from '../../types/pnType';
 import { NodeType, LeafType, ParentType } from '../../types/datatype';
 import { MODULE_NAME, ROOT_OPC_FOLDER } from '../constantes';
+import { getLogger } from 'log4js'
 
 class OpcClient {
     public hostname: string;
     private client: OPCUAClient;
     private isConnected = false;
     private session: ClientSession;
+    private logger = getLogger(MODULE_NAME);
 
     constructor(url: string) {
 
-        this.hostname = url
+        this.hostname = url;
 
         const connectOptions = {
             applicationName: MODULE_NAME,
             connectionStrategy: {
                 initialDelay: 1000,
-                maxRetry: 15
+                maxRetry: 1
             },
             securityMode: MessageSecurityMode.None,
             securityPolicy: SecurityPolicy.None,
@@ -29,10 +31,15 @@ class OpcClient {
 
     async connectClient() {
         if (!this.isConnected) {
-            console.log(this.hostname)
             await this.client.connect(this.hostname).catch((err) => {
-                console.error(`Impossible de se connecter au client OPCUA.`,);
-                console.error("OPC-UA connexion error ==> ", err);
+                this.logger.error(`Impossible de se connecter au client OPCUA. Serveur : ${this.hostname}`,);
+                this.logger.error("OPC-UA connexion error ==> ", err);
+
+                if (process.env.NODE_ENV !== 'production') {
+                    this.logger.info("Vous avez besoin d'un serveur OPC-UA disponible à l'adresse " + this.hostname + " pour tester cette méthode.");
+                    this.logger.info("Pour ça vous pouvez installer un serveur OPC-UA Kepware en téléchargeant le logiciel adéquat à l'adresse https://www.kepware.com/en-us/content-gates/ex-demo-download-content-gate/?product=d2239b8c-36f2-4d07-8fbd-e223d0e26bbf&gate=8a5e8dd5-6edf-4d68-aa36-72f97b11e612");
+                }
+
                 throw err;
             });
 
@@ -48,16 +55,28 @@ class OpcClient {
     }
 
     public async getServerNode(subscribedNodes: OpcNode[], folderId?: string) {
-        return this.connectClient().then(() => {
-            return this.getIdNodesChildren(folderId ? folderId : ROOT_OPC_FOLDER, subscribedNodes)
-        }).catch((err: Error) => {
-            console.error("Erreur lors de la récupération des noeuds du serveurs ", err);
-            console.error("subscribedNodes : ", subscribedNodes);
-            console.error("folderId : ", folderId);
+        return new Promise<NodeType>((resolve, reject) => {
+            this.connectClient()
+                .then(async () => {
+                    console.log('folderId  ==>', folderId);
+                    const getIdNodesChildrenResponse = await this.getIdNodesChildren(folderId ? folderId : ROOT_OPC_FOLDER, subscribedNodes)
+                        .catch((err) => {
+                            reject(err);
+                        })
+                    if (getIdNodesChildrenResponse) {
+                        resolve(getIdNodesChildrenResponse);
+                    }
+                })
+                .catch((err) => {
+                    console.error("Erreur lors de la récupération des noeuds du serveurs ", err);
+                    console.error("subscribedNodes : ", subscribedNodes);
+                    console.error("folderId : ", folderId);
+                    reject(err);
+                });
         });
     }
 
-    public getIdNodesChildren(id: string, alreadySubscribedNodes: OpcNode[]): Promise<NodeType> {
+    public async getIdNodesChildren(id: string, alreadySubscribedNodes: OpcNode[]): Promise<NodeType> {
         return this.session.browse(id).then(
             async (browseResult) => {
                 const result: { [key: string]: LeafType | ParentType } = {};
@@ -93,7 +112,7 @@ class OpcClient {
     }
 
     private checkStringBeginWithUnderscoreOrNumber(str: string) {
-        return /[0-9_]/.test(str[0])
+        return /[_]/.test(str[0])
     }
 }
 

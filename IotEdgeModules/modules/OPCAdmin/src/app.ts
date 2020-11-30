@@ -3,10 +3,11 @@ import { ModuleClient } from 'azure-iot-device';
 import DirectMethods from './directsMethods/DirectMethods';
 import loggerConfig from './loggerConfig';
 import { getLogger } from 'log4js'
+import { MODULE_NAME } from './constantes';
 
 ModuleClient.fromEnvironment(Mqtt, function (moduleError, client) {
   loggerConfig();
-  const logger = getLogger('OPCAdmin');
+  const logger = getLogger(MODULE_NAME);
   if (moduleError) {
     logger.fatal(moduleError.message);
     throw moduleError;

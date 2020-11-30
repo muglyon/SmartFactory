@@ -15,5 +15,4 @@ describe('DirectMethods tests', () => {
 
         expect(client.onMethod).toHaveBeenCalledWith(GET_NODES_METHOD, expect.any(Function))
     });
-
-})
+});
