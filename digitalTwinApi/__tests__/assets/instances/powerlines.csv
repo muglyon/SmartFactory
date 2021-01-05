@@ -1,0 +1,3 @@
+model;Id;Capacity;GridType
+"dtmi:example:grid:transmission:powerLine;1";Power1;100;HighVoltage
+"dtmi:example:grid:transmission:powerLine;1";Power2;200;Distribution

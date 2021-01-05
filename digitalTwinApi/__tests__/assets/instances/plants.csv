@@ -1,0 +1,4 @@
+model;Id;Output;EmissionType;ManufacturerInfo.Name;ManufacturerInfo.Address.Street;ManufacturerInfo.Address.City;ManufacturerInfo.Address.Zip;ManufacturerInfo.Address.Country
+"dtmi:example:grid:plants:cityPlant;1";plant1;200;Renewable;Toto;Rue de Lyon;Lyon;69001 Lyon;France
+"dtmi:example:grid:plants:cityPlant;1";plant2;100;Renewable;Toto;Rue de Lyon;Lyon;69001 Lyon;France
+"dtmi:example:grid:plants:cityPlant;1";plant3;300;Traditional;Toto;Rue de Lyon;Lyon;69001 Lyon;France

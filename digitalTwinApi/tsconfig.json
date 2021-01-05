@@ -1,0 +1,11 @@
+{
+    "include": ["src/**/*", "__tests__/**/*"],
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es2015",
+        "outDir": "dist",
+        "declaration": true,
+        "esModuleInterop": true,
+        "typeRoots": ["./node_modules/@types", "./types"]
+    }
+}
