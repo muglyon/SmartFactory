@@ -1,8 +1,8 @@
 
-jest.mock('../../src/twins/createRelationships')
-import createInstances from "../../src/twins/createInstances"
-import * as createRelationships from "../../src/twins/createRelationships"
-import { Instance } from "../../types/instanceType"
+jest.mock('../../src/twins/relationships/createRelationships')
+import createInstances from "../../src/twins/instances/createInstances"
+import * as createRelationships from "../../src/twins/relationships/createRelationships"
+import { Instance } from "../../src/types/instanceType"
 
 describe("createInstances tests", () => {
 

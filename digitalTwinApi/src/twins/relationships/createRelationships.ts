@@ -1,7 +1,7 @@
 import { DigitalTwinsClient } from "@azure/digital-twins-core";
 import { RelationshipDefinition, RelationshipObject } from "../../types/relationshipType";
 
-import getErrorMessage from "../utils/getErrorMessage";
+import getErrorMessage from "../../utils/getErrorMessage";
 
 export default async function createRelationships(service: DigitalTwinsClient, items: RelationshipDefinition[]) {
     let errorList = []

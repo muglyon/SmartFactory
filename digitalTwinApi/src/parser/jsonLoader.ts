@@ -1,5 +1,5 @@
 import * as fs from 'fs'
-import { Model, ModelList } from '../../types/modelType'
+import { Model, ModelList } from '../types/modelType'
 import { join } from 'path'
 // Function to get the filenames present
 // in the directory

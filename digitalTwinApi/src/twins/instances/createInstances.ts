@@ -1,11 +1,11 @@
 import { DigitalTwinsClient } from "@azure/digital-twins-core";
 import { ModelContent, ModelContentList } from "../../types/modelType";
-import csvDataParser from "../parser/csvDataParser";
+import csvDataParser from "../../parser/csvDataParser";
 import { v4 } from 'uuid'
 import { Instance } from "../../types/instanceType";
 import { RelationshipDefinition } from "../../types/relationshipType";
-import createRelationships from "./createRelationships";
-import getErrorMessage from "../utils/getErrorMessage";
+import createRelationships from "../relationships/createRelationships";
+import getErrorMessage from "../../utils/getErrorMessage";
 
 export default async function createInstances(service: DigitalTwinsClient, items: Instance[]) {
     return new Promise<string[]>(async (res, rej) => {

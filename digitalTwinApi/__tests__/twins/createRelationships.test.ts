@@ -1,6 +1,6 @@
 
-import createRelationships from "../../src/twins/createRelationships"
-import { RelationshipDefinition } from "../../types/relationshipType"
+import createRelationships from "../../src/twins/relationships/createRelationships"
+import { RelationshipDefinition } from "../../src/types/relationshipType"
 
 describe("createRelationships tests", () => {
 

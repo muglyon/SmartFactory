@@ -1,6 +1,6 @@
 {
   "name": "digital-twins-api",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -11,6 +11,15 @@
     "test": "jest --coverage"
   },
   "author": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/muglyon/SmartFactory/tree/master/digitalTwinApi"
+  },
+  "keywords": [
+    "Azure",
+    "Digital twins",
+    "typescript"
+  ],
   "license": "ISC",
   "dependencies": {
     "@azure/digital-twins-core": "^1.0.0",

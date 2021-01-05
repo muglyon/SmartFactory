@@ -1,5 +1,5 @@
-import pushModels from "../../src/twins/pushModels"
-import { ModelList } from "../../types/modelType"
+import pushModels from "../../src/twins/models/pushModels"
+import { ModelList } from "../../src/types/modelType"
 
 describe("pushModels tests", () => {
 

@@ -3,3 +3,5 @@ src
 __tests__
 coverage
 node_modules
+test-report.xml
+jest.config.json

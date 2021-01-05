@@ -1,19 +1,20 @@
 import { DigitalTwinsClient } from "@azure/digital-twins-core";
 import { ClientSecretCredential } from "@azure/identity";
-import { Instance } from "../types/instanceType";
-import { ModelList } from "../types/modelType";
-import { RelationshipDefinition } from "../types/relationshipType";
-import createInstances from "./twins/createInstances";
-import createRelationships from "./twins/createRelationships";
-import pushModels from "./twins/pushModels";
+import { Instance } from "./types/instanceType";
+import { ModelList } from "./types/modelType";
+import { RelationshipDefinition } from "./types/relationshipType";
+import createInstances from "./twins/instances/createInstances";
+import createRelationships from "./twins/relationships/createRelationships";
+import pushModels from "./twins/models/pushModels";
 import { csvLoaderFolder, csvLoader } from "./parser/csvLoader";
 import { jsonLoaderFolder } from "./parser/jsonLoader";
 import jsonPatcher from "./parser/jsonPatch";
+import findRelationsIds from "./twins/instances/findRelations";
 
 export default class DigitalTwinsApi {
 
     service: DigitalTwinsClient
-    constructor(uri: string, tenantId?: string, clientId?: string, clientSecret?: string) {
+    constructor(endpointUrl: string, tenantId?: string, clientId?: string, clientSecret?: string) {
         if (!tenantId) {
             tenantId = process.env.AZURE_TENANT_ID
         }
@@ -27,7 +28,7 @@ export default class DigitalTwinsApi {
             console.error(`Missing configuration -- TenantId : ${tenantId} -- ClientID : ${clientId} -- ClientSecret : ${clientSecret}`)
         }
         const credentials = new ClientSecretCredential(tenantId, clientId, clientSecret)
-        this.service = new DigitalTwinsClient(uri, credentials)
+        this.service = new DigitalTwinsClient(endpointUrl, credentials)
     }
 
     getModels() {
@@ -73,6 +74,10 @@ export default class DigitalTwinsApi {
     async createRelationshipsFolder(folder: string) {
         const items = await csvLoaderFolder<RelationshipDefinition>(folder)
         return createRelationships(this.service, items)
+    }
+
+    findRelationIds(id: string, relationName?: string) {
+        return findRelationsIds(this.service, id, relationName)
     }
 
     updateTwin(id: string, data: { [key: string]: any }) {
