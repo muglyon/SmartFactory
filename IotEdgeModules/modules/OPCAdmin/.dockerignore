@@ -1,4 +1,5 @@
 node_modules
+built
+testResults
 coverage
 __tests__
-testResults

@@ -1,219 +1,288 @@
+import OPCClientMock from '../../__mocks__/OPCClient.mock';
 
-import DirectMethods from '../../src/directsMethods/DirectMethods'
-import { ModuleClient } from 'azure-iot-device';
-import { MethodParams, DeviceMethodRequest, DeviceMethodResponse } from 'azure-iot-device/lib/device_method';
-import OpcClient from '../../src/utils/OpcClient';
+jest.mock('../../src/utils/OpcClient.ts', () => OPCClientMock);
 
-describe('getNodes tests', () => {
+import DirectMethods from '../../src/directsMethods/DirectMethods';
+import * as getEndpointAndNodeRootModule from '../../src/getEndpointAndNodes';
 
-    const OLD_ENV = process.env;
+describe("Direct Methods tests", () => {
 
-    beforeEach(() => {
-        jest.resetModules()
-        process.env = { ...OLD_ENV };
-        delete process.env.NODE_ENV;
+    mockDirectMethod: DirectMethods;
+
+
+    test("given good params for getEndpointConfig it should resolve the promise", async () => {
+        const mockModuleClient = {
+            onMethod: jest.fn(),
+            invokeMethod: jest.fn(() => new Promise((resolve) => resolve(true)))
+        } as any;
+        const directMethods = new DirectMethods(mockModuleClient);
+
+        const getEndpointConfigMockResult = await directMethods.getEndpointConfig(mockModuleClient, "opc.tcp://localhost:49320/");
+
+        expect(getEndpointConfigMockResult).toBe(true);
+
     });
 
-    afterEach(() => {
-        process.env = OLD_ENV;
+    test("given bad params it should reject the promise", async () => {
+        const mockModuleClient = {
+            onMethod: jest.fn(),
+            invokeMethod: jest.fn(() => new Promise((resolve, reject) => reject(true)))
+        } as any;
+        const directMethods = new DirectMethods(mockModuleClient);
+
+        await directMethods.getEndpointConfig(mockModuleClient, "opc.tcp://localhost:49320/")
+            .catch((err) => {
+                expect(err).toBe(true);
+            });
+
     });
 
-    test('Given a bad opc configuration when getNodes then send status 500 and payload', async done => {
-        expect.assertions(5);
-        process.env.IOTEDGE_DEVICEID = 'deviceId'
-
-        const client: ModuleClient = {
-            invokeMethod: (deviceId: string, moduleId: string, methodParams: MethodParams) => {
-                return new Promise((res) => {
-                    expect(deviceId).toBe('deviceId');
-                    expect(moduleId).toBe('OPCPublisher');
-                    expect(methodParams).toEqual({
-                        methodName: "GetConfiguredNodesOnEndpoint",
-                        payload: { "EndpointUrl": 'endpoint' },
-                        connectTimeoutInSeconds: 10,
-                        responseTimeoutInSeconds: 10
-                    });
-                    res({
-                        status: 501,
-                        payload: "error"
-                    });
-                });
-
-            },
-            onMethod: (methodName: string, callback: (req: any, res: any) => void) => {
-                callback(req, res);
-            }
-        } as any
-
-        const req = {
+    test("given a bad payload for getNode method it should send HTTP 400 Response", () => {
+        expect.assertions(1);
+        const request = {
             payload: {
-                url: "endpoint"
+                test: "test"
             }
-        } as DeviceMethodRequest
+        };
 
-        const res = {
+        const response = {
             send: (statusCode: number, payload: any) => {
-                expect(statusCode).toEqual(501)
-                expect(payload).toEqual("error")
-                done()
+                expect(statusCode).toBe(400);
             }
-        } as unknown as DeviceMethodResponse
+        };
 
-        new DirectMethods(client);
+        const onMethodFunction = jest.fn((methodName: string, methodCallBack: (request: any, response: any) => void) => {
+            methodCallBack(request, response);
+        });
+
+        const mockModuleClient = {
+            onMethod: onMethodFunction,
+        } as any;
+
+        new DirectMethods(mockModuleClient);
+
     });
 
-    test('Given a good opc configuration when getNodes then send status 200 and payload', async done => {
-        expect.assertions(5)
-        process.env.IOTEDGE_DEVICEID = 'deviceId'
-
-        OpcClient.prototype.getServerNode = jest.fn().mockImplementation(() => new Promise((res, rej) => res({
-            toto: {
-                id: "id",
-                isSubscribed: true
-            }
-        })))
-
-        const client: ModuleClient = {
-            invokeMethod: (deviceId: string, moduleId: string, methodParams: MethodParams) => {
-                return new Promise((res, rej) => {
-                    expect(deviceId).toBe('deviceId')
-                    expect(moduleId).toBe('OPCPublisher');
-                    expect(methodParams).toEqual({
-                        methodName: "GetConfiguredNodesOnEndpoint",
-                        payload: { "EndpointUrl": 'endpoint' },
-                        connectTimeoutInSeconds: 10,
-                        responseTimeoutInSeconds: 10
-                    })
-                    res({
-                        status: 200,
-                        payload: {
-                            OpcNodes: [{
-                                Id: "id",
-                                DisplayName: "name"
-                            }]
-                        }
-                    })
-                })
-
-            },
-            onMethod: (methodName: string, callback: (req: any, res: any) => void) => {
-                callback(req, res);
-            }
-        } as any
-
-        const req = {
+    test("given a good payload it should call getEndpointConfig method", () => {
+        expect.assertions(1);
+        const request = {
             payload: {
-                url: "endpoint"
+                nodeId: "bonjour",
+                url: "bonjour",
+                deviceId: "bonjour"
             }
-        } as DeviceMethodRequest
+        };
 
-        const res = {
-            send: (statusCode: number, payload: any) => {
-                expect(statusCode).toEqual(200)
-                expect(payload).toEqual({
-                    toto: {
-                        id: "id",
-                        isSubscribed: true
-                    }
-                })
-                done()
-            }
-        } as unknown as DeviceMethodResponse
+        const response = {
+            send: (statusCode: number, payload: any) => { }
+        };
 
-        new DirectMethods(client);
+        const onMethodFunction = jest.fn((methodName: string, methodCallBack: (request: any, response: any) => void) => {
+            methodCallBack(request, response);
+        });
+
+        const mockModuleClient = {
+            onMethod: onMethodFunction,
+        } as any;
+
+        const getEndpointConfigMock = DirectMethods.prototype.getEndpointConfig = jest.fn(() => new Promise((resolve) => resolve()));
+
+        new DirectMethods(mockModuleClient);
+
+        expect(getEndpointConfigMock).toHaveBeenCalledTimes(1);
     });
 
-    test('Given a bad result when getNodes then send status 500 and payload', async done => {
-        expect.assertions(10);
-        process.env.IOTEDGE_DEVICEID = 'deviceId'
-
-        OpcClient.prototype.getServerNode = jest.fn().mockImplementation(() => new Promise((res, rej) => rej("ERROR")))
-
-        const client: ModuleClient = {
-            invokeMethod: (deviceId: string, moduleId: string, methodParams: MethodParams) => {
-                return new Promise((res, rej) => {
-                    expect(deviceId).toBe('deviceId')
-                    expect(moduleId).toBe('OPCPublisher');
-                    expect(methodParams).toEqual({
-                        methodName: "GetConfiguredNodesOnEndpoint",
-                        payload: { "EndpointUrl": 'endpoint' },
-                        connectTimeoutInSeconds: 10,
-                        responseTimeoutInSeconds: 10
-                    })
-                    res({
-                        status: 200,
-                        payload: {
-                            OpcNodes: [{
-                                Id: "id",
-                                DisplayName: "name"
-                            }]
-                        }
-                    })
-                })
-
-            },
-            onMethod: (methodName: string, callback: (req: any, res: any) => void) => {
-                callback(req, res);
-            }
-        } as any
-
-        const req = {
+    test("given a bad response from getEndpointConfig it should send HTTP 500 Response", () => {
+        expect.assertions(1);
+        const request = {
             payload: {
-                url: "endpoint"
+                nodeId: "bonjour",
+                url: "bonjour",
+                deviceId: "bonjour"
             }
-        } as DeviceMethodRequest
+        };
 
-        const res = {
+        const response = {
             send: (statusCode: number, payload: any) => {
-                expect(statusCode).toEqual(500)
-                expect(payload).toEqual("ERROR")
-                done()
+                expect(statusCode).toBe(500);
             }
-        } as unknown as DeviceMethodResponse
+        };
 
-        new DirectMethods(client).getEndpointAndNodes(req, res);
+        const onMethodFunction = jest.fn((methodName: string, methodCallBack: (request: any, response: any) => void) => {
+            methodCallBack(request, response);
+        });
+
+        const mockModuleClient = {
+            onMethod: onMethodFunction,
+        } as any;
+
+        const getEndpointConfigMock = DirectMethods.prototype.getEndpointConfig = jest.fn(() => new Promise((resolve, reject) => reject()));
+
+        new DirectMethods(mockModuleClient);
     });
 
-    test('Given a configuration error when getNodes then send status 500 and payload', async done => {
-        expect.assertions(10)
-        process.env.IOTEDGE_DEVICEID = 'deviceId'
-
-        OpcClient.prototype.getServerNode = jest.fn().mockImplementation(() => new Promise((res, rej) => rej("ERROR")))
-
-        const client: ModuleClient = {
-            invokeMethod: (deviceId: string, moduleId: string, methodParams: MethodParams) => {
-                return new Promise((res, rej) => {
-                    expect(deviceId).toBe('deviceId')
-                    expect(moduleId).toBe('OPCPublisher');
-                    expect(methodParams).toEqual({
-                        methodName: "GetConfiguredNodesOnEndpoint",
-                        payload: { "EndpointUrl": 'endpoint' },
-                        connectTimeoutInSeconds: 10,
-                        responseTimeoutInSeconds: 10
-                    })
-                    rej("CONFIG_ERROR")
-                })
-
-            },
-            onMethod: (methodName: string, callback: (req: any, res: any) => void) => {
-                callback(req, res);
-            }
-        } as any
-
-        const req = {
+    test("given a bad status from getEndpointConfig it should return the payload of getEndpointConfig", () => {
+        expect.assertions(2);
+        const request = {
             payload: {
-                url: "endpoint"
+                nodeId: "bonjour",
+                url: "bonjour",
+                deviceId: "bonjour"
             }
-        } as DeviceMethodRequest
+        };
 
-        const res = {
+        const response = {
             send: (statusCode: number, payload: any) => {
-                expect(statusCode).toEqual(500)
-                expect(payload).toEqual("CONFIG_ERROR")
-                done()
+                expect(statusCode).toBe(503);
+                expect(payload).toBe(true);
             }
-        } as unknown as DeviceMethodResponse
+        };
 
-        new DirectMethods(client).getEndpointAndNodes(req, res);
+        const onMethodFunction = jest.fn((methodName: string, methodCallBack: (request: any, response: any) => void) => {
+            methodCallBack(request, response);
+        });
+
+        const mockModuleClient = {
+            onMethod: onMethodFunction,
+        } as any;
+
+        DirectMethods.prototype.getEndpointConfig = jest.fn(() => new Promise((resolve) => resolve({
+            status: 503,
+            payload: true
+        })));
+
+        new DirectMethods(mockModuleClient);
     });
-})
+
+    test("given a good response from getEndpointConfig it should call getEndpointAndNodes function", () => {
+        expect.assertions(1);
+        //@ts-ignore
+        getEndpointAndNodeRootModule.default = jest.fn(() =>
+            new Promise((resolve) => {
+                resolve()
+            })
+        );
+
+        const request = {
+            payload: {
+                nodeId: "bonjour",
+                url: "bonjour",
+                deviceId: "bonjour"
+            }
+        };
+
+        const response = {
+            send: (statusCode: number, payload: any) => { }
+        };
+
+        const onMethodFunction = jest.fn(async (methodName: string, methodCallBack: (request: any, response: any) => void) => {
+            methodCallBack(request, response);
+            expect(getEndpointAndNodeRootModule.default).toBeCalled();
+
+        });
+
+        const mockModuleClient = {
+            onMethod: onMethodFunction,
+        } as any;
+
+        DirectMethods.prototype.getEndpointConfig = jest.fn(() => new Promise((resolve) => resolve({
+            status: 200,
+            payload: true
+        })));
+
+        new DirectMethods(mockModuleClient);
+    });
+
+    test("given getEndpointAndNodes resolved it should re affectate opcClientList", done => {
+        expect.assertions(1);
+        const expectedOPCListClient = {
+            "url": true
+        }
+        //@ts-ignore
+        getEndpointAndNodeRootModule.default = jest.fn(() =>
+            new Promise((resolve) => {
+                resolve({
+                    newOpcClientList: expectedOPCListClient
+                })
+            })
+        );
+
+        const request = {
+            payload: {
+                nodeId: "bonjour",
+                url: "bonjour",
+                deviceId: "bonjour"
+            }
+        };
+        const response = {
+            send: (statusCode: number, payload: any) => {
+                //@ts-ignore
+                expect(this.mockDirectMethod.opcClientList).toBe(expectedOPCListClient);
+                done();
+            }
+        };
+
+        const onMethodFunction = jest.fn((methodName: string, methodCallBack: (request: any, response: any) => void) => {
+            methodCallBack(request, response);
+        });
+
+        const mockModuleClient = {
+            onMethod: onMethodFunction,
+        } as any;
+
+        DirectMethods.prototype.getEndpointConfig = jest.fn(() => new Promise((resolve) => resolve({
+            status: 200,
+            payload: true
+        })));
+
+        //@ts-ignore
+        this.mockDirectMethod = new DirectMethods(mockModuleClient);
+
+
+    });
+
+    test("given getEndpointAndNodes resolved it should send HTTP 200 response", done => {
+        expect.assertions(2);
+
+        //@ts-ignore
+        getEndpointAndNodeRootModule.default = jest.fn(() =>
+            new Promise((resolve) => {
+                resolve({
+                    status: 200,
+                    payload: true
+                })
+            })
+        );
+
+        const request = {
+            payload: {
+                nodeId: "bonjour",
+                url: "bonjour",
+                deviceId: "bonjour"
+            }
+        };
+
+        const response = {
+            send: (statusCode: number, payload: any) => {
+                expect(statusCode).toBe(200);
+                expect(payload).toBe(true);
+                done();
+            }
+        };
+
+        const onMethodFunction = jest.fn((methodName: string, methodCallBack: (request: any, response: any) => void) => {
+            methodCallBack(request, response);
+        });
+
+        const mockModuleClient = {
+            onMethod: onMethodFunction,
+        } as any;
+
+        DirectMethods.prototype.getEndpointConfig = jest.fn(() => new Promise((resolve) => resolve({
+            status: 200,
+            payload: true
+        })));
+
+        new DirectMethods(mockModuleClient);
+    });
+});

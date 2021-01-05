@@ -1,6 +1,6 @@
 
 import * as opcua from 'node-opcua';
-import OpcClient from '../../src/utils/OpcClient';
+import OpcClient from '../../src/utils/opcClient';
 import { OpcNode } from '../../types/pnType';
 import { ROOT_OPC_FOLDER } from '../../src/constantes'
 import { ClientSession, BrowseResult, ReferenceDescription } from 'node-opcua';
@@ -8,8 +8,6 @@ import { ClientSession, BrowseResult, ReferenceDescription } from 'node-opcua';
 describe('opcClient tests', () => {
     let shouldReject = false
     let session: any;
-
-
 
     beforeEach(() => {
 
@@ -64,7 +62,6 @@ describe('opcClient tests', () => {
         expect(isSessionCreated).toBe(true)
     });
 
-
     test('Call to getServerNode should call getIdNodesChildren', async () => {
 
         const nodes: OpcNode[] = [{
@@ -73,7 +70,7 @@ describe('opcClient tests', () => {
         }]
 
         const opcClient = new OpcClient('endpoint')
-        const spy = jest.spyOn(opcClient, 'getIdNodesChildren' as never).mockImplementation(() => true as never)
+        const spy = jest.spyOn(opcClient, 'getIdNodesChildren' as never).mockImplementation(() => new Promise((resolve) => resolve(true)) as never);
 
         await opcClient.connectClient()
 

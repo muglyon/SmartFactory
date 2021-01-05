@@ -9,6 +9,7 @@
       "module": "commonjs",
       "target": "es2018",
       "baseUrl": ".",
+      "removeComments": true, 
       "paths": {
         "*": ["node_modules/*", "src/types/*"]
       },
@@ -16,5 +17,5 @@
       "outDir": "./built"
     },
     "include": ["./src/**/*", "jest.config.js"],
-    "exclude": ["node_modules"]
+    "exclude": ["node_modules", "./src/debug.ts"]
   }

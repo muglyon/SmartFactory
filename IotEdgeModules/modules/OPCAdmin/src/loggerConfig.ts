@@ -1,4 +1,5 @@
 import { configure } from 'log4js';
+import { MODULE_NAME } from './constantes';
 
 export default () => configure({
   appenders: {
@@ -11,7 +12,7 @@ export default () => configure({
   },
   categories: {
     default: {
-      appenders: ['OPCAdmin'],
+      appenders: [MODULE_NAME],
       level: "ALL"
     }
   }
