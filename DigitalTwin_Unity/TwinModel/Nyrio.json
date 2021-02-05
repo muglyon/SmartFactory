@@ -1,0 +1,46 @@
+{
+    "@context": [
+      "dtmi:dtdl:context;2"
+    ],
+    "@id": "dtmi:com:example:Nyrio;1",
+    "@type": "Interface",
+    "contents": [
+      {
+        "@type": "Property",
+        "name": "isRunning",
+        "schema": "boolean"
+      },
+      {
+        "@type": "Property",
+        "name": "workOrder",
+        "schema": "string"
+      },
+      {
+        "@type": "Property",
+        "name": "isGripperOpen",
+        "schema": "boolean"
+      },
+      {
+        "@type": "Property",
+        "name": "position",
+        "schema": {
+          "@type": "Object",
+          "fields": [
+            {
+              "name": "x",
+              "schema": "double"
+            },
+            {
+              "name": "y",
+              "schema": "double"
+            },
+            {
+              "name": "z",
+              "schema": "double"
+            }
+          ]
+        }
+      }
+    ],
+    "displayName": "Nyrio"
+  }
