@@ -19,6 +19,8 @@ the ROS purpose is to transmit to the modeled robot a trajectory to be followed 
 
 ## Simulator
 
+### IoT Device
+
 A really basic simulator. Based on Nodejs.
 It connects to Azure Iot Hub using a device connection string that must be provided with the environment variable DEVICE_CONNECTION_STRING
 
@@ -40,6 +42,27 @@ To change the values, you have to use the [IoT Device direct methods](https://do
     - x
     - y
     - z
+
+### IoT Edge + OPC UA
+
+Simulator based on the OPCUA protocol and Azure IoT Edge.
+
+The OPCUA simulator can be used in docker with commands
+```
+docker build -t opcua-simulator -f Dockerfile .
+docker run -it -d --network="host" --name=simulator opcua-simulator
+```
+
+Or you can just use 
+```
+npm install
+npm start 
+```
+
+For the IoTEdge, you can use the deployment template in the folder OPCUA/iotedge
+It use the modules in the folder ../IotEdgeModules
+
+Put the file pn.json in a folder /iiotedge in your iot edge device (used for the OPCPublisher module)
 
 # Digital twin
 

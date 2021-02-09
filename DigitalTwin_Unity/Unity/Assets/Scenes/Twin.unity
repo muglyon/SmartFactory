@@ -20660,19 +20660,23 @@ PrefabInstance:
       objectReference: {fileID: 1578897512}
     - target: {fileID: -6044308359017174942, guid: b1ba00f331670ae4cb8b7c579baa68ca, type: 3}
       propertyPath: adtInstanceUrl
-      value: 
+      value: https://adt-staubli-twin-frce-dev.api.weu.digitaltwins.azure.net
       objectReference: {fileID: 0}
     - target: {fileID: -6044308359017174942, guid: b1ba00f331670ae4cb8b7c579baa68ca, type: 3}
       propertyPath: tenantId
-      value: 
+      value: a263ab4d-2c9f-4568-9410-0e3dc57c0c85
       objectReference: {fileID: 0}
     - target: {fileID: -6044308359017174942, guid: b1ba00f331670ae4cb8b7c579baa68ca, type: 3}
       propertyPath: clientId
-      value: 
+      value: 43e6d479-8c02-43eb-be92-480fb6245f2b
       objectReference: {fileID: 0}
     - target: {fileID: -6044308359017174942, guid: b1ba00f331670ae4cb8b7c579baa68ca, type: 3}
       propertyPath: clientSecret
-      value: 
+      value: sptU~_N_7Y__PmQ7pvMvZ-MS2X_oKMH0Q-
+      objectReference: {fileID: 0}
+    - target: {fileID: -6044308359017174942, guid: b1ba00f331670ae4cb8b7c579baa68ca, type: 3}
+      propertyPath: twinName
+      value: Niryo
       objectReference: {fileID: 0}
     - target: {fileID: 3197409107714596102, guid: b1ba00f331670ae4cb8b7c579baa68ca, type: 3}
       propertyPath: m_LocalPosition.x
@@ -20724,7 +20728,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3858478584528839786, guid: b1ba00f331670ae4cb8b7c579baa68ca, type: 3}
       propertyPath: showHUD
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3858478584528839786, guid: b1ba00f331670ae4cb8b7c579baa68ca, type: 3}
+      propertyPath: overrideUnityIP
+      value: 127.0.0.1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: -3636857988019284868, guid: b1ba00f331670ae4cb8b7c579baa68ca, type: 3}

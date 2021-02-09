@@ -1,0 +1,26 @@
+{
+    "isGripperOpen": {
+        "type": "Boolean",
+        "address": "UNITY.GRIPPER"
+    },
+    "isRunning": {
+        "type": "Boolean",
+        "address": "UNITY.RUNNING"
+    },
+    "workOrder": {
+        "type": "String",
+        "address": "UNITY.WORKORDER"
+    },
+    "position_x": {
+        "type": "Float",
+        "address": "UNITY.POSITIONX"
+    },
+    "position_y": {
+        "type": "Float",
+        "address": "UNITY.POSITIONY"
+    },
+    "position_z": {
+        "type": "Float",
+        "address": "UNITY.POSITIONZ"
+    }
+}

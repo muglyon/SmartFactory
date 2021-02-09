@@ -50,7 +50,7 @@ You should have a computer with the IoT Edge runtime installed and connected to 
 
 For build and push you should create and fill the .env file at the same level than this readme.
 ```
-CONTAINER_REGISTRY_ADRESS=<Your docker container registry adress>
+CONTAINER_REGISTRY_ADDRESS=<Your docker container registry adress>
 CONTAINER_REGISTRY_PASSWORD=<Your docker container registry password>
 CONTAINER_REGISTRY_USERNAME=<Your docker container registry username>
 OPCPUBLISHER_VERSION=2.3

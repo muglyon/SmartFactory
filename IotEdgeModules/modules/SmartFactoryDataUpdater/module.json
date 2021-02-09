@@ -2,9 +2,9 @@
     "$schema-version": "0.0.1",
     "description": "",
     "image": {
-        "repository": "$CONTAINER_REGISTRY_ADRESS/dataupdater",
+        "repository": "$CONTAINER_REGISTRY_ADDRESS/dataupdater",
         "tag": {
-            "version": "0.0.2",
+            "version": "1.0.0",
             "platforms": {
                 "amd64": "./Dockerfile"
             }
