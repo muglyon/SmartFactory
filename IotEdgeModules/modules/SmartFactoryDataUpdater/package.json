@@ -9,7 +9,7 @@
         "dev": "ts-node src/debug.ts"
     },
     "dependencies": {
-        "axios": "^0.20.0",
+        "axios": "^0.21.1",
         "azure-iot-device": "^1.17.2",
         "azure-iot-device-mqtt": "^1.15.2",
         "log4js": "^6.3.0",
