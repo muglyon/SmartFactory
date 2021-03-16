@@ -1,0 +1,28 @@
+{
+  "@context": "dtmi:dtdl:context;2",
+  "@id": "dtmi:com:example:Building;1",
+  "@type": "Interface",
+  "displayName": "Building",
+  "contents": [
+    {
+      "@type": "Property",
+      "name": "name",
+      "schema": "string"
+    },
+    {
+      "@type": "Property",
+      "name": "longitude",
+      "schema": "double"
+    },
+    {
+      "@type": "Property",
+      "name": "latitude",
+      "schema": "double"
+    },
+    {
+      "@type": "Relationship",
+      "name": "isIn",
+      "target": "dtmi:com:viseo:City;1"
+    }
+  ]
+}

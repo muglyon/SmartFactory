@@ -1,0 +1,24 @@
+{
+  "bindings": [
+    {
+      "type": "eventHubTrigger",
+      "name": "IoTHubMessages",
+      "direction": "in",
+      "eventHubName": "smartfacto-dev",
+      "connection": "eventhub_cnstr",
+      "cardinality": "one",
+      "consumerGroup": "func"
+    },
+    {
+      "type": "cosmosDB",
+      "direction": "out",
+      "name": "cosmosOutput",
+      "databaseName": "Building",
+      "collectionName": "RoomDatas",
+      "createIfNotExists": "true",
+      "connectionStringSetting": "cosmos_cnstr",
+      "partitionKey": "/twinId"
+    }
+  ],
+  "scriptFile": "../dist/HubToDT/index.js"
+}

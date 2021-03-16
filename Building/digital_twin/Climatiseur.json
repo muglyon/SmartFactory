@@ -1,0 +1,38 @@
+{
+  "@context": "dtmi:dtdl:context;2",
+  "@id": "dtmi:com:viseo:Climatiseur;1",
+  "@type": "Interface",
+  "displayName": "Climatiseur",
+  "contents": [
+    {
+      "@type": "Property",
+      "name": "temperature",
+      "schema": "double"
+    },
+    {
+      "@type": "Property",
+      "name": "desiredTemperature",
+      "schema": "double"
+    },
+    {
+      "@type": "Property",
+      "name": "consumption",
+      "schema": "double"
+    },
+    {
+      "@type": "Property",
+      "name": "date",
+      "schema": "string"
+    },
+    {
+      "@type": "Property",
+      "name": "version",
+      "schema": "string"
+    },
+    {
+      "@type": "Relationship",
+      "name": "manage",
+      "target": "dtmi:com:viseo:Hall;1"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "@context": "dtmi:dtdl:context;2",
+  "@id": "dtmi:com:viseo:Hall;1",
+  "@type": "Interface",
+  "displayName": "Hall",
+  "contents": [
+    {
+      "@type": "Property",
+      "name": "globalConsumption",
+      "schema": "double"
+    },
+    {
+      "@type": "Property",
+      "name": "date",
+      "schema": "string"
+    },
+    {
+      "@type": "Property",
+      "name": "width",
+      "schema": "integer"
+    },
+    {
+      "@type": "Property",
+      "name": "height",
+      "schema": "integer"
+    },
+    {
+      "@type": "Property",
+      "name": "length",
+      "schema": "integer"
+    },
+    {
+      "@type": "Property",
+      "name": "eco",
+      "schema": "double"
+    },
+    {
+      "@type": "Property",
+      "name": "nbPeople",
+      "schema": "integer"
+    },
+    {
+      "@type": "Relationship",
+      "name": "isIn",
+      "target": "dtmi:com:viseo:Building;1"
+    }
+  ]
+}

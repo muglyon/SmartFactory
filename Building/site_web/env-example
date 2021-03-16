@@ -1,0 +1,6 @@
+TENANT_ID=
+CLIENT_ID=
+CLIENT_SECRET=
+COSMOS_CNSTR=AccountEndpoint=
+TWIN_ENDPOINT=
+NODE_ENV=<development | prod>

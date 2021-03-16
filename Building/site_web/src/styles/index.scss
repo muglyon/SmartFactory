@@ -1,0 +1,29 @@
+.input {
+  float: right;
+}
+
+.output {
+  float: left;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 5% 5%;
+  text-align: center;
+
+  div {
+    margin-bottom: 15px;
+  }
+}
+
+.generalEnergy {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.projectDescription {
+  padding: 15px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
