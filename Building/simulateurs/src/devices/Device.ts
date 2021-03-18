@@ -3,6 +3,8 @@ import { clientFromConnectionString } from 'azure-iot-device-mqtt'
 import flatten from 'flat';
 import { Datas, TwinProperties } from 'messageType';
 
+const COEFF_CLIM_ENERGY = 35
+const COEFF_LUMENS_ENERGY = 65
 export default class Device {
 
     deviceBaseName: string;
@@ -50,7 +52,7 @@ export default class Device {
                         ...this.twinData,
                         ...delta
                     }
-
+                    delete this.twinData["$version"]
                     this.updateReportedTwin(twin);
                 })
             });
@@ -65,11 +67,12 @@ export default class Device {
     }
 
     updateReportedTwin(twin: Twin) {
-        
+
         console.log("Setting target twin to " + JSON.stringify(this.twinData))
         twin.properties.reported.update(
             this.twinData, function (err) {
                 if (err) {
+                    console.error(err)
                     console.error('could not update twin');
                 } else {
                     console.log('twin state reported');
@@ -86,9 +89,9 @@ export default class Device {
 
     updateTemp() {
         if (this.datas.temp > this.twinData.targetTemp) {
-            this.datas.temp -= Math.random()
+            this.datas.temp -= Math.random()/5
         } else {
-            this.datas.temp += Math.random()
+            this.datas.temp += Math.random()/5
         }
     }
 
@@ -101,22 +104,28 @@ export default class Device {
     }
 
     updateLum() {
-        const volume = this.twinData.length * this.twinData.height * this.twinData.width
+        const surface = this.twinData.length * this.twinData.height
         if (this.datas.nbPeople > 0 && this.twinData.isLightRun) {
-            this.datas.luminosity = 1000 * volume
+            this.datas.luminosity = 300 * surface
         } else {
-            this.datas.luminosity = 100 * volume
+            this.datas.luminosity = 100 * surface
         }
     }
 
     updateConso() {
         const volume = this.twinData.length * this.twinData.height * this.twinData.width
-        this.datas.escalatorConsumption = this.twinData.isEscalatorRun ? 10000 + (Math.random() * 1000) : 0
-        this.datas.climConsumption = volume * 35
+        const deviceNumber = parseInt(this.deviceNumber)
+        this.datas.escalatorConsumption = this.twinData.isEscalatorRun ?
+            (2000 + (Math.random() * 1000)) * deviceNumber
+            : 0
+
+        console.log(this.twinData.isEscalatorRun, this.datas.escalatorConsumption)
+        // 35W par m3
+        this.datas.climConsumption = volume * COEFF_CLIM_ENERGY
 
         // 1000 lumens = 65 W
         // actual Luments = ?
-        this.datas.lightConsumption = (this.datas.luminosity * 65) / 1000
+        this.datas.lightConsumption = (this.datas.luminosity * COEFF_LUMENS_ENERGY) / 1000
     }
 
     sendUpdate() {
@@ -131,7 +140,7 @@ export default class Device {
 
     formatToDT() {
         const volume = this.twinData.length * this.twinData.height * this.twinData.width
-        const globalConsumption= this.datas.lightConsumption + this.datas.escalatorConsumption + this.datas.climConsumption
+        const globalConsumption = this.datas.lightConsumption + this.datas.escalatorConsumption + this.datas.climConsumption
         const date = new Date().toISOString()
 
         return {

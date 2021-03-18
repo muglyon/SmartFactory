@@ -27,10 +27,10 @@ const main = async () => {
     })
   }
 
-  setInterval(intervalFunction, 5000)
+  setInterval(intervalFunction, 1000)
 
   const server = createServer(app);
-  const port = process.env.PORT ? process.env.PORT : 3000;
+  const port = process.env.PORT ? process.env.PORT : 3001;
   server.listen(port, () => {
     console.log('> Ready on http://localhost:' + port)
   });

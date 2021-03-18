@@ -1,9 +1,5 @@
 import { Status } from "azure-iothub/dist/pl/models";
-
-export interface ProjectList {
-    CETEssai: string;
-    time?: string;
-}
+import { AddDataAction } from "./SocketProvider";
 
 
 export interface InitProjectList {
@@ -11,88 +7,96 @@ export interface InitProjectList {
 }
 
 export interface ProjectListState {
-    CET: {
-        list?: ProjectList[];
-        current?: ProjectList;
-    }
-    status: GetStatusByCETData;
-    images: ImageType
-    graphData: GraphData;
+    twinData: Datas;
+    graphData: any;
+    huile: any;
+    deviceTwin: { [key: string]: any }
 }
 
-export interface ImageType {
-    engrenagePicture: string;
-    zoomEngrenagePicture: string;
-}
-export type GraphData = SVMData[] | EWMAData[]
 
-export interface StatusItem {
-    name: string;
-    ObjName: string;
-    status?: string;
-    mode?: string;
-}
 
-export interface EnergyItem {
-    name: string;
-    input_energy: number;
-    output_energy: number;
-}
+export type ProjectListAction = AddDataAction | setGraphDataActionType | setDeviceTwinActionType | HuileDat;
 
-export interface GetStatusByCETData {
-    energy: EnergyItem[];
-    status: StatusItem[];
-}
-
-export interface StatusMapping {
-    'Roulement Principal': string;
-    'Engrenage Principal': string;
-    'Génératrice': string;
-    'Engrenage-Pignon': string;
-    'Engrenage-Roue': string;
-}
-
-export type ProjectListAction = ProjectListSetAction | ProjectListSetCurrent | setStatusActionType | setGraphDataActionType;
-
-export interface ProjectListSetAction {
-    type: "PROJECT_LIST_SET";
-    projectList: ProjectList[];
-}
-
-export interface ProjectListSetCurrent {
-    type: "PROJECT_LIST_CURRENT";
-    current: ProjectList;
-}
-
-export interface setStatusActionType {
-    type: "STATUS_LIST_SET";
-    statusItemList: GetStatusByCETData;
-}
 
 export interface setGraphDataActionType {
     type: "SET_GRAPH_DATA";
-    graphData: GraphData;
+    graphData: any[];
 }
 
-export interface EWMAData {
-    CET: string;
-    essai: number;
-    name: string;
-    ObjName: string;
-    time: Date;
-    y: number;
-    lower: number;
-    upper: number;
-    mode: string;
+export interface setDeviceTwinActionType {
+    type: "SET_DEVICE_TWIN";
+    deviceTwin: { [key: string]: any }
 }
 
-export interface SVMData {
-    CET: string;
-    essai: number;
-    name: string;
-    ObjName: string;
-    time: Date;
-    rolling_mean: number;
-    status: string;
-    y: number;
+export interface Datas {
+    Hall_01: Hall;
+    Hall_02: Hall;
+    Hall_03: Hall;
+    Light_01: Light;
+    Light_02: Light;
+    Light_03: Light;
+    Clim_01: Clim;
+    Clim_02: Clim;
+    Clim_03: Clim;
+    Escalator_01: Escalator;
+    Escalator_02: Escalator;
+    Escalator_03: Escalator;
+}
+
+export interface Clim {
+    date: Date;
+    version: string;
+    consumption: number;
+    temperature: number;
+    desiredTemperature: number;
+}
+
+export interface Escalator {
+    date: Date;
+    isRunning: boolean;
+    consumption: number;
+}
+
+export interface Light {
+    date: Date;
+    isRunning: boolean;
+    consumption: number;
+    luminosity: number;
+}
+
+export interface Hall {
+    date: Date;
+    width: number;
+    height: number;
+    length: number;
+    eco: number;
+    globalConsumption: number;
+    nbPeople: number;
+}
+
+export interface HuileData {
+    "4_µm":              number;
+    "5_µm":              number;
+    "6_µm":              number;
+    "10_µm":             number;
+    "12_µm":             number;
+    "14_µm":             number;
+    "20_µm":             number;
+    "21_µm":             number;
+    "25_µm":             number;
+    "30_µm":             number;
+    "38_µm":             number;
+    "50_µm":             number;
+    "60_µm":             number;
+    "70_µm":             number;
+    "100_µm":            number;
+    "200_µm":            number;
+    Densité:             number;
+    Ecart_de_viscosité:  number;
+    Horodatage:          string;
+    Humidite:            number;
+    Temperature:         number;
+    Total_de_particules: number;
+    Viscosité_dynamique: number;
+    timestamp:           Date;
 }

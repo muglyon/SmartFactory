@@ -1,29 +1,42 @@
-.input {
-  float: right;
-}
-
-.output {
-  float: left;
+html, body, #__next, .layout {
+  height: 100%;
 }
 
 .grid-container {
+  height: 90%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: 5% 5%;
-  text-align: center;
+  grid-template-columns: 0.3fr 0.3fr 0.3fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  // gap: 5px 5px;
+  grid-template-areas:
+    ". . . Infos Infos Infos Infos Infos ."
+    ". . Escalator_3 Hall_3 Light_3 Clim_3_version Clim_3_temp Clim_3_conso Rights_3"
+    ". Escalator_2 Escalator_3 Hall_2 Light_2 Clim_2_version Clim_2_temp Clim_2_conso Rights_2"
+    "Escalator_1 Escalator_2 Escalator_3 Hall_1 Light_1 Clim_1_version Clim_1_temp Clim_1_conso Rights_1";
 
-  div {
-    margin-bottom: 15px;
+  img {
+    height: 75px;
   }
 }
-
-.generalEnergy {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-}
-
-.projectDescription {
-  padding: 15px;
-  margin-top: 30px;
-  margin-bottom: 30px;
-}
+.Escalator_1 { grid-area: Escalator_1; background-color: rgb(255, 242, 205); border: 2px solid black;}
+.Escalator_2 { grid-area: Escalator_2; background-color: rgb(180, 199, 231); border: 2px solid black;}
+.Escalator_3 { grid-area: Escalator_3; background-color: rgb(255, 122, 131); border: 2px solid black;}
+.Hall_3 { grid-area: Hall_3; border-top: 2px solid black; border-bottom: 2px solid black;}
+.Hall_2 { grid-area: Hall_2; border-top: 2px solid black; border-bottom: 2px solid black;}
+.Hall_1 { grid-area: Hall_1; border-top: 2px solid black; border-bottom: 2px solid black;}
+.Light_3 { grid-area: Light_3; border-top: 2px solid black; border-bottom: 2px solid black;}
+.Light_2 { grid-area: Light_2; border-top: 2px solid black; border-bottom: 2px solid black;}
+.Light_1 { grid-area: Light_1; border-top: 2px solid black; border-bottom: 2px solid black;}
+.Clim_3_version { grid-area: Clim_3_version; border-top: 2px solid black; border-bottom: 2px solid black;}
+.Clim_2_version { grid-area: Clim_2_version; border-top: 2px solid black; border-bottom: 2px solid black;}
+.Clim_1_version { grid-area: Clim_1_version; border-top: 2px solid black; border-bottom: 2px solid black;}
+.Clim_3_temp { grid-area: Clim_3_temp; border-top: 2px solid black; border-bottom: 2px solid black;}
+.Clim_2_temp { grid-area: Clim_2_temp; border-top: 2px solid black; border-bottom: 2px solid black;}
+.Clim_1_temp { grid-area: Clim_1_temp; border-top: 2px solid black; border-bottom: 2px solid black;}
+.Clim_3_conso { grid-area: Clim_3_conso; border-top: 2px solid black; border-bottom: 2px solid black;}
+.Clim_2_conso { grid-area: Clim_2_conso; border-top: 2px solid black; border-bottom: 2px solid black;}
+.Clim_1_conso { grid-area: Clim_1_conso; border-top: 2px solid black; border-bottom: 2px solid black;}
+.Rights_3 { grid-area: Rights_3; border-left: 2px solid black; border-right: 2px solid black; border-top: 2px solid black;}
+.Rights_2 { grid-area: Rights_2; border-left: 2px solid black; border-right: 2px solid black;}
+.Rights_1 { grid-area: Rights_1; border-left: 2px solid black; border-right: 2px solid black; border-bottom: 2px solid black;}
+.Infos { grid-area: Infos; border: 2px solid black;}

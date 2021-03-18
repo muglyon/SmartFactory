@@ -3,18 +3,19 @@ import cosmosDbSingleton from '../CosmosDbSingleton';
 
 export default function getGraphData(req: Request, res: Response) {
 
-    const CETEssai = req.query.CETEssai?.toString()
-    const indicator = req.query.indicator?.toString()
+    const twinId = req.query.twinId?.toString()
+    const itemKey = req.query.itemKey?.toString()
 
-    if(!CETEssai) {
+    if(!twinId) {
         res.status(400)
-        res.send('Missing CETEssai parameter')
-    } else if (!indicator) {
+        res.send('Missing twinId parameter')
+    } else if (!itemKey) {
         res.status(400)
-        res.send('Missing indicator parameter')
+        res.send('Missing itemKey parameter')
     } else {
-        cosmosDbSingleton.getInstance().getGraphByIndicator(CETEssai, indicator).then((values) => {
+        cosmosDbSingleton.getInstance().getGraphData(twinId, itemKey).then((values) => {
             res.status(200)
+            console.log("GO !", values)
             res.send(values)
         })
             .catch((err) => {

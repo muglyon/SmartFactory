@@ -30,20 +30,20 @@ class SmartFactory extends App<SmartFactoryProps> {
 
     static async getInitialProps({ Component, ctx }) {
 
-        let layoutProps: Partial<AuthentifiedProps>;
-        if (process.browser) {
-            const initialProps = (window as any).__NEXT_DATA__.props.initialProps.pageProps
-            layoutProps = {
-                roles: initialProps.roles,
-                userName: initialProps.userName
-            }
-        } else {
-            const user: User = (ctx.req as any).user;
-            layoutProps = {
-                userName: user.displayName as string,
-                roles: user.roles
-            }
-        }
+        // let layoutProps: Partial<AuthentifiedProps>;
+        // if (process.browser) {
+        //     const initialProps = (window as any).__NEXT_DATA__.props.initialProps.pageProps
+        //     layoutProps = {
+        //         roles: initialProps.roles,
+        //         userName: initialProps.userName
+        //     }
+        // } else {
+        //     const user: User = (ctx.req as any).user;
+        //     layoutProps = {
+        //         userName: user.displayName as string,
+        //         roles: user.roles
+        //     }
+        // }
         let componentProps = {}
 
         if (Component.getInitialProps) {
@@ -53,7 +53,7 @@ class SmartFactory extends App<SmartFactoryProps> {
         return {
             pageProps: {
                 ...componentProps,
-                ...layoutProps
+                // ...layoutProps
             }
         }
     }
@@ -71,7 +71,7 @@ class SmartFactory extends App<SmartFactoryProps> {
                     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
                 </Head>
                     <Layout {...pageProps}>
-                        {/* {this.SocketProvider} */}
+                        {this.SocketProvider}
                         <NoSsr>
                             <Component {...pageProps} />
                         </NoSsr>

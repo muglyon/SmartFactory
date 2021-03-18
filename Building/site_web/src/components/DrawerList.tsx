@@ -29,7 +29,7 @@ export function DrawerList(props) {
                 <ListItem button divider
                     onClick={() => handleListItem("/")}>
                     <span className="icon"><ArrowBack /></span>
-                    <span className="caption">Indicateur {drawerTitle}</span>
+                    <span className="caption">About {drawerTitle}</span>
                 </ListItem>
                 {
                     drawerContent.length > 0 ? drawerContent.map((content) => <ListItem key={content.label}
@@ -47,8 +47,9 @@ export function DrawerList(props) {
                         {content.label}
                     </ListItem>) :
                         <ListItem divider>
-                            Veuillez sélectionner un numéro de dossier <br />
-                            ainsi qu'un composant du banc
+                            Projet de démonstration d'Azure Digital Twin <br/>
+                            Par Louis, Vincent et Maxime <br/>
+                            Pour le magazine Programmez!
                         </ListItem>
                 }
             </List>

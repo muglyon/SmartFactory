@@ -1,6 +1,6 @@
 {
   "@context": "dtmi:dtdl:context;2",
-  "@id": "dtmi:com:example:Country;1",
+  "@id": "dtmi:com:viseo:Country;1",
   "@type": "Interface",
   "displayName": "Country",
   "contents": [

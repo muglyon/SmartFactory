@@ -3,4 +3,5 @@ CLIENT_ID=
 CLIENT_SECRET=
 COSMOS_CNSTR=AccountEndpoint=
 TWIN_ENDPOINT=
+IOTHUB_CNSTR=
 NODE_ENV=<development | prod>

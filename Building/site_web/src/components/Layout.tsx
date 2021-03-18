@@ -1,43 +1,20 @@
-import { useEffect, ReactElement, Fragment } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { ReactElement } from "react";
+import { useDispatch } from "react-redux";
 import { AuthentifiedProps } from '../types/Auth';
-import { AppBar, Toolbar, IconButton, TextField, Box, CircularProgress } from '@material-ui/core';
-import { ExitToApp, Home, Menu, Info } from '@material-ui/icons';
-import { Autocomplete } from '@material-ui/lab';
+import { AppBar, Toolbar, IconButton, Box } from '@material-ui/core';
+import { Home, Menu, Assistant, Explore, CloudUpload, Category, Functions, Airplay } from '@material-ui/icons';
 import { withRouter } from 'next/router';
-import { GlobalState } from '../types/globalState';
 import drawerToggleAction from "../actions/drawer/drawerToggleAction";
-import currentDataAction from "../actions/datas/currentDataAction";
-import setGraphData from "../actions/datas/setGraphData";
-import setDataAction from "../actions/datas/setDataAction";
 import Link from 'next/link'
-import DatabaseService from "../service/Database.service";
-import { ProjectList } from "../types/datas";
-import setStatusAction from "../actions/datas/setStatus";
 import ActiveLink from './ActiveLink'
 import "../styles/Layout.scss";
 import { DrawerList } from "./DrawerList";
-import Footer from "./Footer";
 
 function Layout(props: AuthentifiedProps & { children: ReactElement }) {
-    const projectList = useSelector<GlobalState, ProjectList[] | undefined>((state) => state.datas.CET.list);
-    const projectListCurrent = useSelector<GlobalState, ProjectList | null>((state) => state.datas.CET.current ? state.datas.CET.current : null);
-    const dispatch = useDispatch();
-    const loading = projectList == undefined;
-    const handleCETChange = (project: ProjectList) => {
-        dispatch(setGraphData([]))
-        dispatch(currentDataAction(project))
-        DatabaseService.queryStatusByCET(project.CETEssai, project.time).then((values) => {
-            dispatch(setStatusAction(values))
-        })
-    }
 
-    useEffect(() => {
-        // Récupérer les numéro d'essais et les mettres dans le store redux.
-        DatabaseService.queryCET().then((values) => {
-            dispatch(setDataAction(values));
-        })
-    }, [])
+    const dispatch = useDispatch();
+
+
 
     return <div className="layout">
         <AppBar style={{ background: 'white', color: 'black' }}>
@@ -59,13 +36,49 @@ function Layout(props: AuthentifiedProps & { children: ReactElement }) {
                         <span className="caption">Accueil</span>
                     </a>
                 </ActiveLink>
+                <li key="separatorTwin" className="item-separator-custom"></li>
+                <ActiveLink href="/twinDevices" className="link" activeClassName="selected-tab" key="link-twin">
+                    <a>
+                        <span className="icon"><CloudUpload /></span>
+                        <span className="caption">Twin Device</span>
+                    </a>
+                </ActiveLink>
+                <li key="separatorRemote" className="item-separator-custom"></li>
+                <ActiveLink href="/remote" className="link" activeClassName="selected-tab" key="link-remote">
+                    <a>
+                        <span className="icon"><Assistant /></span>
+                        <span className="caption">Remote assistance</span>
+                    </a>
+                </ActiveLink>
 
-                <li key="separatorUser" className="item-separator-custom"></li>
-                <Box className="userInfos" >
-                    <span className="vl"></span>
-                    <span className="caption">{props.userName}</span>
-                    <a className="user-logout" href='/logout'><ExitToApp /></a>
-                </Box>
+                <li key="separatorData" className="item-separator-custom"></li>
+                <ActiveLink href="/dataexplorer" className="link" activeClassName="selected-tab" key="link-explore">
+                    <a>
+                        <span className="icon"><Explore /></span>
+                        <span className="caption">Digital twin Explorer</span>
+                    </a>
+                </ActiveLink>
+                <li key="separatorMapping" className="item-separator-custom"></li>
+                <ActiveLink href="/mapping" className="link" activeClassName="selected-tab" key="link-mapping">
+                    <a>
+                        <span className="icon"><Airplay /></span>
+                        <span className="caption">Mapping 3D</span>
+                    </a>
+                </ActiveLink>
+                <li key="separatorpredict" className="item-separator-custom"></li>
+                <ActiveLink href="/prediction" className="link" activeClassName="selected-tab" key="link-predict">
+                    <a>
+                        <span className="icon"><Category /></span>
+                        <span className="caption">Analyse prédictive</span>
+                    </a>
+                </ActiveLink>
+                <li key="separatorFormules" className="item-separator-custom"></li>
+                <ActiveLink href="/formules" className="link" activeClassName="selected-tab" key="link-formule">
+                    <a>
+                        <span className="icon"><Functions /></span>
+                        <span className="caption">Formules</span>
+                    </a>
+                </ActiveLink>
             </Toolbar>
 
         </AppBar>
@@ -74,7 +87,6 @@ function Layout(props: AuthentifiedProps & { children: ReactElement }) {
             {props.children}
         </div>
         <DrawerList />
-        <Footer />
     </div>
 };
 

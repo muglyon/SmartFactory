@@ -1,6 +1,6 @@
 {
   "@context": "dtmi:dtdl:context;2",
-  "@id": "dtmi:com:example:City;1",
+  "@id": "dtmi:com:viseo:City;1",
   "@type": "Interface",
   "displayName": "City",
   "contents": [

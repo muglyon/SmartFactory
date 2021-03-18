@@ -35,7 +35,7 @@ export default class DigitalTwinsSingleton {
             this.isInitialized = true;
 
             this.dataObservable = new Observable(subscriber => { this.subscriber = subscriber })
-            setInterval(() => { this.getAllTwinsData() }, 5000)
+            setInterval(() => { this.getAllTwinsData() }, 1000)
         }
     }
 
@@ -69,7 +69,6 @@ export default class DigitalTwinsSingleton {
 
             datas.push(filteredData)
         }
-
         this.sendToSubscriber(this.formatToFront(datas))
     }
 

@@ -1,50 +1,43 @@
-import { ProjectListAction, ProjectListState } from "../types/datas";
-import getImageNameByStatusItems from "../utils/getImageNameByStatus";
+import { Datas, ProjectListAction, ProjectListState } from "../types/datas";
 
 const projectListInitState: ProjectListState = {
-    CET: {
-        list: undefined,
-        current: undefined
-    },
-    status: {
-        energy: [],
-        status: []
-    },
-    images: {
-        engrenagePicture: "scen0",
-        zoomEngrenagePicture: "scenA"
-    },
-    graphData: []
+    twinData: {} as Datas,
+    graphData: [],
+    deviceTwin: {},
+    huile: {}
 };
 
 export default function projectListReducer(state: ProjectListState = projectListInitState, action: ProjectListAction): ProjectListState {
     switch (action.type) {
-        case "PROJECT_LIST_SET":
+        case "ADD_MESSAGE":
             return {
                 ...state,
-                CET: {
-                    ...state.CET,
-                    list: action.projectList,
-                }
-            };
-        case "PROJECT_LIST_CURRENT":
-            return {
-                ...state,
-                CET: {
-                    ...state.CET,
-                    current: action.current
-                }
-            };
-        case "STATUS_LIST_SET":
-            return {
-                ...state,
-                status: action.statusItemList,
-                images: getImageNameByStatusItems(action.statusItemList.status)
+                twinData: action.payload
             };
         case "SET_GRAPH_DATA":
             return {
                 ...state,
                 graphData: action.graphData
+            }
+        case "ADD_HUILE_MESSAGE":
+            const newHuile = {...state.huile}
+            Object.keys(action.payload).forEach((key) => {
+                if(!newHuile[key]) {
+                    newHuile[key] = []
+                }
+                newHuile[key] = [...newHuile[key], action.payload[key]]
+                if(newHuile[key].length > 30){
+                    newHuile[key].shift()
+                }
+            })
+            return {
+                ...state,
+                huile: newHuile
+            }
+        case "SET_DEVICE_TWIN":
+            return {
+                ...state,
+                deviceTwin: action.deviceTwin
             }
         default:
             return state;

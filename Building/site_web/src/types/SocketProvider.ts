@@ -1,4 +1,5 @@
 import { Action } from 'redux';
+import { Datas, HuileData } from './datas';
 
 
 export interface BackMessage {
@@ -9,7 +10,7 @@ export interface BackMessage {
 
 export interface BackBody {
     type: string;
-    data:  any;
+    data: any;
 }
 
 export interface FrontMessage {
@@ -29,5 +30,11 @@ export interface TelemetryDatas extends TimestampedData {
 export type SocketProviderActionType = "ADD_MESSAGE";
 
 export interface AddDataAction extends Action<SocketProviderActionType> {
-    payload: FrontMessage;
+    payload: Datas;
+}
+
+
+export interface AddHuileDataAction {
+    type: "ADD_HUILE_MESSAGE"
+    payload: HuileData;
 }

@@ -3,9 +3,10 @@ export default {
         DEV_URL : "http://localhost:3000",
         ADMIN_BASE_URL: "admin",
         TWIN_SUBSCRIBE: '/twin/subscribe',
+        DEVICE_TWIN: '/device/twin',
         GET_GRAPH_URL: '/data/graph'
     },
-    WEBISTE_TITLE: "Cetim Smart Data",
+    WEBISTE_TITLE: "Digital twin BIS",
     REQUEST_COMPLETE_STATE: 4,
     HTTP_CODES: {
         OK: 200,
