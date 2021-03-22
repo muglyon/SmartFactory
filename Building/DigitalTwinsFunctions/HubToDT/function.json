@@ -18,6 +18,13 @@
       "createIfNotExists": "true",
       "connectionStringSetting": "cosmos_cnstr",
       "partitionKey": "/twinId"
+    },
+    {
+      "type": "eventHub",
+      "direction": "out",
+      "name": "adxHub",
+      "connection": "adxhub_cnstr",
+      "eventHubName": "adx-hub"
     }
   ],
   "scriptFile": "../dist/HubToDT/index.js"

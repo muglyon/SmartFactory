@@ -1,0 +1,71 @@
+.create table RawData (['data']: dynamic) 
+
+.create table Clim (['twinId']: string, ['date']: datetime, ['version']: string, ['consumption']: int, ['temperature']: real, ['desiredTemperature']: int)
+
+.create table Escalator(['twinId']: string, ['date']: datetime, ['isRunning']: bool, ['consumption']: real)
+
+.create table Light(['twinId']: string, ['date']: datetime, ['isRunning']: bool, ['consumption']: real, ['luminosity']: int)
+
+
+.create table Hall(['twinId']: string, ['date']: datetime, ['width']: int, ['height']: int, ['length']: int, ['eco']: real, ['globalConsumption']: real, ['nbPeople']: int)
+
+.create-or-alter function  Light {
+RawData
+| project MyJson = parse_json(['data'])
+| where MyJson.twinId startswith "Light"
+| project
+    twinid = tostring(MyJson.twinId),
+    ['date'] = todatetime(MyJson['date']),
+    isRunning = tobool(MyJson.isRunning),
+    consumption = toreal(MyJson.consumption),
+    luminosity = toint(MyJson.luminosity)
+}
+
+
+.create-or-alter function  Clim  {
+RawData
+| project MyJson = parse_json(['data'])
+| where MyJson.twinId startswith "Clim"
+| project
+    twinid = tostring(MyJson.twinId),
+    ['date'] = todatetime(MyJson['date']),
+    version = tostring(MyJson.version),
+    consumption = toint(MyJson.consumption),
+    temperature = toreal(MyJson.temperature),
+    desiredTemperature = toint(MyJson.desiredTemperature)
+}
+
+.create-or-alter function  Escalator  {
+RawData
+| project MyJson = parse_json(['data'])
+| where MyJson.twinId startswith "Escalator"
+| project
+    twinid = tostring(MyJson.twinId),
+    ['date'] = todatetime(MyJson['date']),
+   isRunning = tobool(MyJson.isRunning),
+     consumption = toreal(MyJson.consumption)
+}
+
+.create-or-alter function  Hall  {
+RawData
+| project MyJson = parse_json(['data'])
+| where MyJson.twinId startswith "Hall"
+| project
+    twinid = tostring(MyJson.twinId),
+    ['date'] = todatetime(MyJson['date']),
+    width = toint(MyJson.width),
+    height = toint(MyJson.height),
+    length = toint(MyJson.length),
+    eco = toreal(MyJson.eco),
+     globalConsumption = toreal(MyJson.globalConsumption),
+    nbPeople = toint(MyJson.nbPeople)
+}
+
+
+.alter table Clim policy update @'[{"Source": "RawData", "Query": "Clim()", "IsEnabled": "True"}]'
+
+.alter table Escalator policy update @'[{"Source": "RawData", "Query": "Escalator()", "IsEnabled": "True"}]'
+
+.alter table Hall policy update @'[{"Source": "RawData", "Query": "Hall()", "IsEnabled": "True"}]'
+
+.alter table Light policy update @'[{"Source": "RawData", "Query": "Light()", "IsEnabled": "True"}]'

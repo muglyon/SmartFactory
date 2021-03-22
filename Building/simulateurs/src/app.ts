@@ -27,7 +27,7 @@ const main = async () => {
     })
   }
 
-  setInterval(intervalFunction, 1000)
+  setInterval(intervalFunction, 5000)
 
   const server = createServer(app);
   const port = process.env.PORT ? process.env.PORT : 3001;

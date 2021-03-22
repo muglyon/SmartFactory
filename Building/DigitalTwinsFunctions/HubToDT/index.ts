@@ -12,18 +12,19 @@ const IoTHubTrigger: AzureFunction = async function (context: Context, message: 
 
     const items = extractTwins(device, message)
 
-    const cosmosData = []
+    const splittedDatas = []
     Object.keys(items).forEach((key) => {
         dt.updateTwin(key, items[key]).catch((err) => console.error (err))
         
-        cosmosData.push({
+        splittedDatas.push({
             twinId: key,
             ...items[key]
         })
     })
 
-    context.bindings.cosmosOutput = JSON.stringify(cosmosData)
-
+    const stringData = JSON.stringify(splittedDatas)
+    context.bindings.cosmosOutput = stringData;
+    context.bindings.adxHub = splittedDatas;
     context.log(`new message from ${device} : ${JSON.stringify(items)}`)
 };
 
