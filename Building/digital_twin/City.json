@@ -3,16 +3,12 @@
   "@id": "dtmi:com:viseo:City;1",
   "@type": "Interface",
   "displayName": "City",
+  "extends": ["dtmi:com:viseo:Place;1"],
   "contents": [
-    {
-      "@type": "Property",
-      "name": "name",
-      "schema": "string"
-    },
     {
       "@type": "Relationship",
       "name": "isIn",
-      "target": "dtmi:com:viseo:Country;1"
+      "target": "dtmi:com:viseo:Place;1"
     }
   ]
 }

@@ -3,6 +3,7 @@
   "@id": "dtmi:com:viseo:Hall;1",
   "@type": "Interface",
   "displayName": "Hall",
+  "extends": ["dtmi:com:viseo:Place;1"],
   "contents": [
     {
       "@type": "Property",

@@ -1,19 +1,23 @@
 {
   "@context": "dtmi:dtdl:context;2",
-  "@id": "dtmi:com:viseo:Building;1",
+  "@id": "dtmi:com:viseo:Alarm;1",
   "@type": "Interface",
-  "displayName": "Building",
-  "extends": ["dtmi:com:viseo:Place;1"],
+  "displayName": "Alarm",
   "contents": [
     {
       "@type": "Property",
-      "name": "longitude",
-      "schema": "double"
+      "name": "constructor",
+      "schema": "string"
     },
     {
       "@type": "Property",
-      "name": "latitude",
+      "name": "consumption",
       "schema": "double"
+    },   
+    {
+      "@type": "Property",
+      "name": "status",
+      "schema": "string"
     },
     {
       "@type": "Relationship",

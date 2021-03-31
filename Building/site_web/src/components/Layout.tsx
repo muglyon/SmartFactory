@@ -2,7 +2,7 @@ import { ReactElement } from "react";
 import { useDispatch } from "react-redux";
 import { AuthentifiedProps } from '../types/Auth';
 import { AppBar, Toolbar, IconButton, Box } from '@material-ui/core';
-import { Home, Menu, Assistant, Explore, CloudUpload, Category, Functions, Airplay } from '@material-ui/icons';
+import { Home, Menu, Assistant, Explore, CloudUpload, Category, Functions, Airplay, Map } from '@material-ui/icons';
 import { withRouter } from 'next/router';
 import drawerToggleAction from "../actions/drawer/drawerToggleAction";
 import Link from 'next/link'
@@ -77,6 +77,13 @@ function Layout(props: AuthentifiedProps & { children: ReactElement }) {
                     <a>
                         <span className="icon"><Functions /></span>
                         <span className="caption">Formules</span>
+                    </a>
+                </ActiveLink>
+                <li key="separatorMap" className="item-separator-custom"></li>
+                <ActiveLink href="/map" className="link" activeClassName="selected-tab" key="link-map">
+                    <a>
+                        <span className="icon"><Map /></span>
+                        <span className="caption">Carte</span>
                     </a>
                 </ActiveLink>
             </Toolbar>

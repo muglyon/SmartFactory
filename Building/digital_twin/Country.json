@@ -3,11 +3,5 @@
   "@id": "dtmi:com:viseo:Country;1",
   "@type": "Interface",
   "displayName": "Country",
-  "contents": [
-    {
-      "@type": "Property",
-      "name": "name",
-      "schema": "string"
-    }
-  ]
+  "extends": ["dtmi:com:viseo:Place;1"]
 }

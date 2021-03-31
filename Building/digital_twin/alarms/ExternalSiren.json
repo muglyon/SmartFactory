@@ -1,0 +1,16 @@
+{
+    "@context": "dtmi:dtdl:context;2",
+    "@id": "dtmi:com:viseo:Siren;1",
+    "@type": "Interface",
+    "displayName": "Siren",
+    "extends": [
+        "dtmi:com:viseo:Alarm;1"
+    ],
+    "contents": [
+        {
+            "@type": "Property",
+            "name": "sound",
+            "schema": "integer"
+        }
+    ]
+}

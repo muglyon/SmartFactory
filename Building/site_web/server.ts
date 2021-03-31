@@ -20,6 +20,7 @@ import { Server } from 'socket.io';
 import getDeviceTwin from './src/server/src/getDeviceTwin';
 import setDeviceTwin from './src/server/src/setDeviceTwin';
 import DeviceTwinSingleton from './src/server/DeviceTwinSingleton';
+import Freshdesk from 'freshdesk-api'
 
 const expApp = express();
 const server = createServer(expApp);
@@ -34,7 +35,7 @@ app.prepare().then(async () => {
 
   DigitalTwinsSingleton.getInstance().init(process.env.TWIN_ENDPOINT as string);
   DeviceTwinSingleton.getInstance();
-  
+
   const twinsIds = [
     "Hall_01", "Hall_02", "Hall_03",
     "Light_01", "Light_02", "Light_03",
@@ -58,7 +59,8 @@ app.prepare().then(async () => {
   expApp.post(constantes.URLS.DEVICE_TWIN, setDeviceTwin)
 
   expApp.all('*', (req, res) => {
-
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     handle(req, res);
 
   });

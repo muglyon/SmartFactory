@@ -1,0 +1,16 @@
+{
+    "@context": "dtmi:dtdl:context;2",
+    "@id": "dtmi:com:viseo:Camera;1",
+    "@type": "Interface",
+    "displayName": "Camera",
+    "extends": [
+        "dtmi:com:viseo:Alarm;1"
+    ],
+    "contents": [
+        {
+            "@type": "Property",
+            "name": "detectSomeone",
+            "schema": "boolean"
+        }
+    ]
+}
