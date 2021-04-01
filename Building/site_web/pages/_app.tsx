@@ -73,9 +73,6 @@ class SmartFactory extends App<SmartFactoryProps> {
                     <link rel="stylesheet" href="node_modules/azure-maps-drawing-tools/dist/atlas-indoor.min.css" type="text/css" />
                     <script src="node_modules/azure-maps-drawing-tools/dist/atlas-indoor.min.js"></script>
 
-                    {/* 
-                    <script crossOrigin="true" src="node_modules/azure-maps-control/dist/atlas.min.js"></script>
-                    <script crossOrigin="true" src="node_modules/azure-maps-indoor/dist/atlas-indoor.min.js"></script> */}
                     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
                 </Head>
                 <Layout {...pageProps}>

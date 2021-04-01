@@ -46,6 +46,8 @@ export function csvLoader<T=any>(path: string) {
 
 function dataTyping({ value }) {
     if (value === '') return undefined
+    if (value === "false") return false
+    if (value === "true") return true
     if(isNaN(value)) {
         return value
     } else return parseFloat(value)

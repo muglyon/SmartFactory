@@ -48,13 +48,13 @@ export default async function createInstances(service: DigitalTwinsClient, items
 
                             })
                             if (model) {
-
-                                service.upsertDigitalTwin(id, {
+                                const digitalTwinJson = {
                                     $metadata: {
                                         $model: modelName
                                     },
                                     ...parsedItem
-                                } as any).catch((err) => {
+                                }
+                                service.upsertDigitalTwin(id, JSON.stringify(digitalTwinJson)).catch((err) => {
                                     listError.push(`id: ${id} --> ${getErrorMessage(err)}`)
                                 })
                             }

@@ -24,7 +24,6 @@ const IoTHubTrigger: AzureFunction = async function (context: Context, message: 
 
     const stringData = JSON.stringify(splittedDatas)
     context.bindings.cosmosOutput = stringData;
-    context.bindings.adxHub = splittedDatas;
     context.log(`new message from ${device} : ${JSON.stringify(items)}`)
 };
 

@@ -20,7 +20,6 @@ import { Server } from 'socket.io';
 import getDeviceTwin from './src/server/src/getDeviceTwin';
 import setDeviceTwin from './src/server/src/setDeviceTwin';
 import DeviceTwinSingleton from './src/server/DeviceTwinSingleton';
-import Freshdesk from 'freshdesk-api'
 
 const expApp = express();
 const server = createServer(expApp);
