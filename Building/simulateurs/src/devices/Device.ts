@@ -89,9 +89,9 @@ export default class Device {
 
     updateTemp() {
         if (this.datas.temp > this.twinData.targetTemp) {
-            this.datas.temp -= Math.random()/5
+            this.datas.temp -= Math.random() / 5
         } else {
-            this.datas.temp += Math.random()/5
+            this.datas.temp += Math.random() / 5
         }
     }
 
@@ -119,7 +119,6 @@ export default class Device {
             (2000 + (Math.random() * 1000)) * deviceNumber
             : 0
 
-        console.log(this.twinData.isEscalatorRun, this.datas.escalatorConsumption)
         // 35W par m3
         this.datas.climConsumption = volume * COEFF_CLIM_ENERGY
 
@@ -142,7 +141,8 @@ export default class Device {
         const volume = this.twinData.length * this.twinData.height * this.twinData.width
         const globalConsumption = this.datas.lightConsumption + this.datas.escalatorConsumption + this.datas.climConsumption
         const date = new Date().toISOString()
-
+        const isCovidAlarmRun = (this.twinData.width * this.twinData.length / this.datas.nbPeople) < 4;
+        console.log(this.twinData.width * this.twinData.length / this.datas.nbPeople)
         return {
             temp: {
                 TwinId: "Clim_" + this.deviceNumber,
@@ -164,6 +164,18 @@ export default class Device {
                 isRunning: this.twinData.isLightRun,
                 consumption: this.datas.lightConsumption,
                 luminosity: this.datas.luminosity
+            },
+            fireAlarm: {
+                TwinId: "FireAlarm_" + this.deviceNumber,
+                date,
+                status: this.datas.temp > 80 ? "ON" : "OFF",
+                sounds: this.twinData.alarmDecibels
+            },
+            covidAlarm: {
+                TwinId: "CovidAlarm_" + this.deviceNumber,
+                date,
+                status: isCovidAlarmRun ? "ON" : "OFF",
+                printedText: isCovidAlarmRun ?  `Too many people in the Hall : ${this.datas.nbPeople}` : `${this.datas.nbPeople} people in the Hall : Good`
             },
             date,
             width: this.twinData.width,

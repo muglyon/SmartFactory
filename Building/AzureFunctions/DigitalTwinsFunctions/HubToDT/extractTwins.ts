@@ -16,7 +16,14 @@ export default function extractTwins(deviceId: string, message: any): any {
 
     otherKeys.forEach((key) => {
 
-        const parentKey = twinList.find((x) => key.includes(x))
+        // const parentKey = twinList.find((x) => key.split('.').includes(x))
+        const splittedKey = key.split('.')
+        let parentKey: string;
+        while(splittedKey.length > 0 && !parentKey) {
+            splittedKey.pop()
+            parentKey = twinList.find((x) => splittedKey.join('.') == x)
+        }
+        // const parentKey = twinList.find((x) => key.includes(x))
         const reducedKey = parentKey ? key.replace(parentKey + '.', '') : key
         const deviceKey = parentKey ? flattened[parentKey + '.TwinId'] : deviceId
         if (!toReturn[deviceKey]) {

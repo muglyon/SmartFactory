@@ -16,4 +16,5 @@ export interface TwinProperties {
     climVersion: string;
     isEscalatorRun: boolean;
     isLightRun: boolean;
+    alarmDecibels: number;
 }

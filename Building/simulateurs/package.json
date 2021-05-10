@@ -9,6 +9,7 @@
     "dependencies": {
         "azure-iot-device": "^1.17.3",
         "azure-iot-device-mqtt": "^1.13.3",
+        "dotenv": "^8.5.1",
         "express": "^4.17.1",
         "flat": "^5.0.2",
         "typescript": "^4.0.2"

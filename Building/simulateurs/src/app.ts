@@ -2,6 +2,8 @@ import Device from './devices/Device';
 import getDeviceList from './getDeviceList';
 import express, { json } from 'express';
 import { createServer } from 'http';
+import { config } from 'dotenv';
+config();
 
 const main = async () => {
 
