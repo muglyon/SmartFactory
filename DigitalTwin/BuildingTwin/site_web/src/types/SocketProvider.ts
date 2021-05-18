@@ -1,5 +1,5 @@
 import { Action } from 'redux';
-import { Datas, HuileData } from './datas';
+import { Datas } from './datas';
 
 
 export interface BackMessage {
@@ -31,10 +31,4 @@ export type SocketProviderActionType = "ADD_MESSAGE";
 
 export interface AddDataAction extends Action<SocketProviderActionType> {
     payload: Datas;
-}
-
-
-export interface AddHuileDataAction {
-    type: "ADD_HUILE_MESSAGE"
-    payload: HuileData;
 }

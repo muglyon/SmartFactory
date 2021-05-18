@@ -114,7 +114,7 @@ export default function index() {
                     }} value={twinPatch["climVersion"]} twinKey="climVersion" />
                 </div>
 
-                <Button variant="contained" color="primary" onClick={() => {
+                <Button variant="contained" style={{marginTop: "10px"}} color="primary" onClick={() => {
                     TwinService.setDeviceTwin(hall, twinPatch)
                 }}>
                     Valider
@@ -125,14 +125,14 @@ export default function index() {
 };
 
 function Text(props: any) {
-    return <TextField style={{ width: "50%" }} onChange={props.onChange}
+    return <TextField className="twinInput" onChange={props.onChange}
         key={props.twinKey} label={props.twinKey} value={props.value} InputLabelProps={{
             shrink: true,
         }} />
 }
 
 function Number(props: any) {
-    return <TextField style={{ width: "50%" }} type="number" onChange={props.onChange}
+    return <TextField  className="twinInput" type="number" onChange={props.onChange}
         key={props.twinKey} label={props.twinKey} value={props.value} InputLabelProps={{
             shrink: true,
         }} />

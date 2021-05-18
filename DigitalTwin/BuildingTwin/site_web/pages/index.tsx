@@ -5,7 +5,6 @@ import setGraphData from "../src/actions/datas/setGraphData";
 import Database from "../src/service/Database.service";
 import { Datas } from "../src/types/datas";
 import Graph from "../src/components/Graph/Graph";
-import Huile from "../src/components/Huile";
 import '../src/styles/index.scss'
 import handleModalAction from "../src/actions/modal/handleModalAction";
 // import Thermometer from 'react-thermometer-component'
@@ -16,7 +15,7 @@ export default function index() {
     const twinData = useSelector<GlobalState, Datas>((state) => state.datas.twinData);
 
 
-
+    
     //@ts-ignore (Conflit dans la définition de type node).
     // const handleClickArea = (e: MouseEvent<HTMLAreaElement, MouseEvent>) => {
     //     e.preventDefault();
@@ -36,10 +35,6 @@ export default function index() {
         dispatch(handleModalAction(true, <Graph twin={twin} dataKey={key} />))
     }
 
-    const huileHandler = () => {
-        
-        dispatch(handleModalAction(true, <Huile/>))
-    }
 
     if (Object.keys(twinData).length == 0) return null;
 
@@ -202,7 +197,7 @@ export default function index() {
                 USERS Read / Write :
                 Vincent
                 
-                <img src="./huile.svg" onClick={() => huileHandler()}/>
+                <img src="./huile.svg" />
                 </div>
             <div className="Infos">
                 <b>Building Beaubourg, centre Georges Pompidou.</b>

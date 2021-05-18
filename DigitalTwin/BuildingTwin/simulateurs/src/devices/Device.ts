@@ -128,7 +128,7 @@ export default class Device {
     }
 
     sendUpdate() {
-        this.client.sendEvent(new Message(JSON.stringify(flatten(this.formatToDT()))), (err, result) => {
+        this.client.sendEvent(new Message(JSON.stringify(this.formatToDT())), (err, result) => {
             if (err) {
                 console.error(err)
             } else {
@@ -142,7 +142,7 @@ export default class Device {
         const globalConsumption = this.datas.lightConsumption + this.datas.escalatorConsumption + this.datas.climConsumption
         const date = new Date().toISOString()
         const isCovidAlarmRun = (this.twinData.width * this.twinData.length / this.datas.nbPeople) < 4;
-        console.log(this.twinData.width * this.twinData.length / this.datas.nbPeople)
+        
         return {
             temp: {
                 TwinId: "Clim_" + this.deviceNumber,

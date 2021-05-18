@@ -61,7 +61,6 @@ class SmartFactory extends App<SmartFactoryProps> {
 
     render(): any {
         const { Component, pageProps } = this.props;
-
         return (
             <>
                 <Head>
@@ -69,10 +68,7 @@ class SmartFactory extends App<SmartFactoryProps> {
                     <title>{constantes.WEBISTE_TITLE}</title>
                     <link crossOrigin="true" rel="stylesheet" href="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.css" type="text/css" />
                     <link crossOrigin="true" rel="stylesheet" href="https://atlas.microsoft.com/sdk/javascript/indoor/0.1/atlas-indoor.min.css" type="text/css" />
-                    
-                    <link rel="stylesheet" href="node_modules/azure-maps-drawing-tools/dist/atlas-indoor.min.css" type="text/css" />
-                    <script src="node_modules/azure-maps-drawing-tools/dist/atlas-indoor.min.js"></script>
-
+                 
                     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
                 </Head>
                 <Layout {...pageProps}>

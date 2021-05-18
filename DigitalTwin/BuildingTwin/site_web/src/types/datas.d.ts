@@ -9,13 +9,12 @@ export interface InitProjectList {
 export interface ProjectListState {
     twinData: Datas;
     graphData: any;
-    huile: any;
     deviceTwin: { [key: string]: any }
 }
 
 
 
-export type ProjectListAction = AddDataAction | setGraphDataActionType | setDeviceTwinActionType | HuileDat;
+export type ProjectListAction = AddDataAction | setGraphDataActionType | setDeviceTwinActionType ;
 
 
 export interface setGraphDataActionType {
@@ -72,31 +71,4 @@ export interface Hall {
     eco: number;
     globalConsumption: number;
     nbPeople: number;
-}
-
-export interface HuileData {
-    "4_µm":              number;
-    "5_µm":              number;
-    "6_µm":              number;
-    "10_µm":             number;
-    "12_µm":             number;
-    "14_µm":             number;
-    "20_µm":             number;
-    "21_µm":             number;
-    "25_µm":             number;
-    "30_µm":             number;
-    "38_µm":             number;
-    "50_µm":             number;
-    "60_µm":             number;
-    "70_µm":             number;
-    "100_µm":            number;
-    "200_µm":            number;
-    Densité:             number;
-    Ecart_de_viscosité:  number;
-    Horodatage:          string;
-    Humidite:            number;
-    Temperature:         number;
-    Total_de_particules: number;
-    Viscosité_dynamique: number;
-    timestamp:           Date;
 }

@@ -4,6 +4,7 @@ export default function verifyEnv() {
         process.env.CLIENT_SECRET &&
         process.env.COSMOS_CNSTR &&
         process.env.TWIN_ENDPOINT &&
+        process.env.SIGNALR_ENDPOINT &&
         process.env.IOTHUB_CNSTR) {
         return true;
     }

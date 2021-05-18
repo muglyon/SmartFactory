@@ -9,8 +9,8 @@ export default class DigitalTwinsSingleton {
     private service: DigitalTwinsClient
     isInitialized: boolean = false;
     private twinIdList: string[] = [];
-    dataObservable: Observable< {[key: string]: any}>;
-    private subscriber: Subscriber< {[key: string]: any}>;
+    dataObservable: Observable<{ [key: string]: any }>;
+    private subscriber: Subscriber<{ [key: string]: any }>;
 
     private constructor() {
 
@@ -28,7 +28,6 @@ export default class DigitalTwinsSingleton {
         }
         if (!tenantId || !clientId || !clientSecret) {
             console.error(`Missing configuration -- TenantId : ${tenantId} -- ClientID : ${clientId} -- ClientSecret : ${clientSecret}`)
-
         } else {
             const credentials = new ClientSecretCredential(tenantId, clientId, clientSecret)
             this.service = new DigitalTwinsClient(endpointUrl, credentials)
@@ -47,43 +46,46 @@ export default class DigitalTwinsSingleton {
     }
 
     addTwinId(twinId: string) {
-        if(!this.twinIdList.includes(twinId)) {
+        if (!this.twinIdList.includes(twinId)) {
             this.twinIdList.push(twinId)
         }
     }
 
     private async getAllTwinsData() {
-        const datas: any[] = [];
+        if (this.isInitialized) {
+            const datas: any[] = [];
 
-        const forbiddenKeys = ["$metadata", "$etag"]
-        for (const twinId of this.twinIdList) {
-            const data = await this.service.getDigitalTwin(twinId)
-            // datas.push(data.body)
+            const forbiddenKeys = ["$metadata", "$etag"]
+            for (const twinId of this.twinIdList) {
+                const data = await this.service.getDigitalTwin(twinId)
+                // datas.push(data.body)
 
-            const filteredData = Object.keys(data.body)
-                .filter(key => !forbiddenKeys.includes(key))
-                .reduce((obj, key) => {
-                    obj[key] = data.body[key];
-                    return obj;
-                }, {});
+                const filteredData = Object.keys(data.body)
+                    .filter(key => !forbiddenKeys.includes(key))
+                    .reduce((obj, key) => {
+                        obj[key] = data.body[key];
+                        return obj;
+                    }, {});
 
-            datas.push(filteredData)
+                datas.push(filteredData)
+            }
+            this.sendToSubscriber(this.formatToFront(datas))
         }
-        this.sendToSubscriber(this.formatToFront(datas))
+
     }
 
     private formatToFront(datas: any[]) {
         const items = {}
-        for (const data  of datas) {
+        for (const data of datas) {
             const id = data["$dtId"]
-            items[id] = {...data}
+            items[id] = { ...data }
             delete items[id]["$dtId"]
         }
 
         return items
     }
 
-    private sendToSubscriber(datas: {[key: string]: any}) {
+    private sendToSubscriber(datas: { [key: string]: any }) {
         this.subscriber.next(datas)
     }
 }
