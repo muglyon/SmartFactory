@@ -1,0 +1,16 @@
+{
+    "@context": "dtmi:dtdl:context;2",
+    "@id": "dtmi:com:viseo:CovidAlarm;1",
+    "@type": "Interface",
+    "displayName": "CovidAlarm",
+    "extends": [
+        "dtmi:com:viseo:Alarm;1"
+    ],
+    "contents": [
+        {
+            "@type": "Property",
+            "name": "printedText",
+            "schema": "string"
+        }
+    ]
+}

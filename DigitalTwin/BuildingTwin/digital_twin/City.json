@@ -1,0 +1,14 @@
+{
+  "@context": "dtmi:dtdl:context;2",
+  "@id": "dtmi:com:viseo:City;1",
+  "@type": "Interface",
+  "displayName": "City",
+  "extends": ["dtmi:com:viseo:Place;1"],
+  "contents": [
+    {
+      "@type": "Relationship",
+      "name": "isIn",
+      "target": "dtmi:com:viseo:Place;1"
+    }
+  ]
+}

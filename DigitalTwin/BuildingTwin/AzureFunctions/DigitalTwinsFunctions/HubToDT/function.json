@@ -1,0 +1,14 @@
+{
+  "bindings": [
+    {
+      "type": "eventHubTrigger",
+      "name": "IoTHubMessages",
+      "direction": "in",
+      "eventHubName": "smartfacto-dev",
+      "connection": "eventhub_cnstr",
+      "cardinality": "many",
+      "consumerGroup": "func"
+    }
+  ],
+  "scriptFile": "../dist/HubToDT/index.js"
+}

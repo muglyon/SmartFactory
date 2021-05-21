@@ -56,6 +56,7 @@ typings/
 
 # dotenv environment variables file
 .env
+.next
 
 # Remove IoT Edge deployments solutions.
 IotEdgeModules/config/*.json

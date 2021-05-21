@@ -1,0 +1,28 @@
+{
+  "name": "digitaltwinsfunctions",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "prestart": "npm run build",
+    "start": "func start",
+    "test": "jest --coverage"
+  },
+  "dependencies": {
+    "digital-twins-api": "^1.0.2"
+  },
+  "devDependencies": {
+    "@azure/functions": "^1.0.2-beta2",
+    "@types/jest": "^26.0.20",
+    "jest": "^26.6.3",
+    "jest-sonar-reporter": "^2.0.0",
+    "ts-jest": "^26.4.4",
+    "typescript": "^3.3.3"
+  },
+  "jestSonar": {
+    "reportPath": "testResults",
+    "reportFile": "sonar-report.xml",
+    "indent": 4
+  }
+}

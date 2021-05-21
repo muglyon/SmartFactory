@@ -1,0 +1,16 @@
+{
+    "@context": "dtmi:dtdl:context;2",
+    "@id": "dtmi:com:viseo:FireAlarm;1",
+    "@type": "Interface",
+    "displayName": "FireAlarm",
+    "extends": [
+        "dtmi:com:viseo:Alarm;1"
+    ],
+    "contents": [
+        {
+            "@type": "Property",
+            "name": "sounds",
+            "schema": "integer"
+        }
+    ]
+}

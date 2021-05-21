@@ -1,0 +1,33 @@
+{
+  "@context": "dtmi:dtdl:context;2",
+  "@id": "dtmi:com:viseo:Light;1",
+  "@type": "Interface",
+  "displayName": "Light",
+  "contents": [
+    {
+      "@type": "Property",
+      "name": "isRunning",
+      "schema": "boolean"
+    },
+    {
+      "@type": "Property",
+      "name": "consumption",
+      "schema": "double"
+    },
+    {
+      "@type": "Property",
+      "name": "luminosity",
+      "schema": "double"
+    },
+    {
+      "@type": "Property",
+      "name": "date",
+      "schema": "string"
+    },
+    {
+      "@type": "Relationship",
+      "name": "enlight",
+      "target": "dtmi:com:viseo:Hall;1"
+    }
+  ]
+}

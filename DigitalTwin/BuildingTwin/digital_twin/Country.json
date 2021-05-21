@@ -1,0 +1,7 @@
+{
+  "@context": "dtmi:dtdl:context;2",
+  "@id": "dtmi:com:viseo:Country;1",
+  "@type": "Interface",
+  "displayName": "Country",
+  "extends": ["dtmi:com:viseo:Place;1"]
+}
