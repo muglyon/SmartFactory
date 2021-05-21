@@ -63,3 +63,4 @@ IotEdgeModules/config/*.json
 .vscode
 built
 testResults
+wks.vscode-MUG-SmartF.code-workspace
