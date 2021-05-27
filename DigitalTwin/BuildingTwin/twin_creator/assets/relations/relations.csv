@@ -1,0 +1,10 @@
+source;name;target
+Clim_01;manage;Room_01
+Escalator_01;isIn;Room_01
+Light_01;enlight;Room_01
+Clim_02;manage;Room_02
+Escalator_02;isIn;Room_02
+Light_02;enlight;Room_02
+Clim_11;manage;Room_11
+Escalator_11;isIn;Room_11
+Light_11;enlight;Room_11

@@ -1,0 +1,16 @@
+{
+    "@context": "dtmi:dtdl:context;2",
+    "@id": "dtmi:com:demo:ExternalSiren;1",
+    "@type": "Interface",
+    "displayName": "ExternalSiren",
+    "extends": [
+        "dtmi:com:demo:Alarm;1"
+    ],
+    "contents": [
+        {
+            "@type": "Property",
+            "name": "sound",
+            "schema": "integer"
+        }
+    ]
+}

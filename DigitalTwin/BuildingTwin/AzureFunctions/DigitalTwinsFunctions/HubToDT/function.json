@@ -7,7 +7,7 @@
       "eventHubName": "smartfacto-dev",
       "connection": "eventhub_cnstr",
       "cardinality": "many",
-      "consumerGroup": "func"
+      "consumerGroup": "dtfunc"
     }
   ],
   "scriptFile": "../dist/HubToDT/index.js"

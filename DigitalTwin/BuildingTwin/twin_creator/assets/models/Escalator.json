@@ -1,0 +1,28 @@
+{
+  "@context": "dtmi:dtdl:context;2",
+  "@id": "dtmi:com:demo:Escalator;1",
+  "@type": "Interface",
+  "displayName": "Escalator",
+  "contents": [
+    {
+      "@type": "Property",
+      "name": "isRunning",
+      "schema": "boolean"
+    },
+    {
+      "@type": "Property",
+      "name": "consumption",
+      "schema": "double"
+    },
+    {
+      "@type": "Property",
+      "name": "date",
+      "schema": "string"
+    },
+    {
+      "@type": "Relationship",
+      "name": "isIn",
+      "target": "dtmi:com:demo:Hall;1"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+    "@context": "dtmi:dtdl:context;2",
+    "@id": "dtmi:com:demo:InfraredCamera;1",
+    "@type": "Interface",
+    "displayName": "InfraredCamera",
+    "extends": [
+        "dtmi:com:demo:Camera;1"
+    ],
+    "contents": [
+        {
+            "@type": "Property",
+            "name": "infraredMode",
+            "schema": "boolean"
+        }
+    ]
+}

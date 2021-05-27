@@ -1,0 +1,33 @@
+{
+  "@context": "dtmi:dtdl:context;2",
+  "@id": "dtmi:com:demo:Alarm;1",
+  "@type": "Interface",
+  "displayName": "Alarm",
+  "contents": [
+    {
+      "@type": "Property",
+      "name": "constructor",
+      "schema": "string"
+    },
+    {
+      "@type": "Property",
+      "name": "date",
+      "schema": "string"
+    },
+    {
+      "@type": "Property",
+      "name": "consumption",
+      "schema": "double"
+    },   
+    {
+      "@type": "Property",
+      "name": "status",
+      "schema": "string"
+    },
+    {
+      "@type": "Relationship",
+      "name": "isIn",
+      "target": "dtmi:com:demo:Place;1"
+    }
+  ]
+}

@@ -2297,10 +2297,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1446bde501afd9f42953e7d0726724ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tenantId: b0c4c7a9-898e-42e1-8ae4-27beec0092be
-  clientId: fc73bf72-9207-46d3-8aca-56a5be254dcb
-  clientSecret: pgLgE-U5-Wmiv7Uiwo7M4_~3_2n5H~93nw
-  adtInstanceUrl: https://dt-batiment-demo.api.weu.digitaltwins.azure.net
+  tenantId: 
+  clientId: 
+  clientSecret: 
+  adtInstanceUrl: 
 --- !u!4 &1486149779
 Transform:
   m_ObjectHideFlags: 0

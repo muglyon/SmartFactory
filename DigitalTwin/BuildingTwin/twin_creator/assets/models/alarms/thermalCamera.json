@@ -1,0 +1,21 @@
+{
+    "@context": "dtmi:dtdl:context;2",
+    "@id": "dtmi:com:demo:ThermalCamera;1",
+    "@type": "Interface",
+    "displayName": "ThermalCamera",
+    "extends": [
+        "dtmi:com:demo:Camera;1"
+    ],
+    "contents": [
+        {
+            "@type": "Property",
+            "name": "thermalMode",
+            "schema": "boolean"
+        },
+        {
+            "@type": "Property",
+            "name": "maxTempDetected",
+            "schema": "double"
+        }
+    ]
+}
