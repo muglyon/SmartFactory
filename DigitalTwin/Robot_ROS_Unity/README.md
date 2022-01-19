@@ -1,4 +1,4 @@
-# Nyrio robot digital twin
+# Niryo robot digital twin
 
 Highly based on the repository [Unity-Robotics-Hub](https://github.com/Unity-Technologies/Unity-Robotics-Hub/tree/dev/tutorials/pick_and_place)
 
